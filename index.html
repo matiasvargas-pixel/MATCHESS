@@ -1,1 +1,6714 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MATCHESS — Chess</title>
+
+<style>
+
+/* =========================================================
+   MATCHESS
+========================================================= */
+
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+}
+
+body{
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color:#f5f7fa;
+
+    background:
+        radial-gradient(
+            circle at 50% -20%,
+            #29465c 0%,
+            #121d27 38%,
+            #080d12 100%
+        );
+
+    min-height:100vh;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+
+    height:68px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 28px;
+
+    background:
+        rgba(8,13,18,.94);
+
+    border-bottom:
+        1px solid rgba(255,255,255,.07);
+
+    backdrop-filter:blur(15px);
+
+    position:sticky;
+    top:0;
+
+    z-index:100;
+}
+
+.logo{
+
+    display:flex;
+    align-items:center;
+    gap:11px;
+
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.logo-icon{
+
+    width:39px;
+    height:39px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:10px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #4cc9f0,
+            #4361ee
+        );
+
+    box-shadow:
+        0 6px 20px
+        rgba(67,97,238,.3);
+
+    font-size:23px;
+}
+
+.logo-name{
+    font-size:21px;
+}
+
+.header-right{
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.header-pill{
+
+    padding:7px 11px;
+
+    border-radius:8px;
+
+    background:#151f28;
+
+    color:#8493a0;
+
+    font-size:11px;
+    font-weight:800;
+}
+
+
+/* =========================================================
+   PANTALLA PRINCIPAL / MENÚ
+========================================================= */
+
+.start-screen{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:200;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at 50% 25%,
+            rgba(46,82,108,.35),
+            rgba(5,9,13,.98) 65%
+        );
+
+    backdrop-filter:blur(12px);
+
+    overflow:auto;
+}
+
+.start-card{
+
+    width:
+        min(900px,100%);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(27,39,49,.98),
+            rgba(12,19,25,.98)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    border-radius:22px;
+
+    padding:32px;
+
+    box-shadow:
+        0 35px 100px
+        rgba(0,0,0,.55);
+}
+
+.start-brand{
+
+    text-align:center;
+
+    margin-bottom:22px;
+}
+
+.start-knight{
+
+    font-size:62px;
+
+    margin-bottom:4px;
+
+    filter:
+        drop-shadow(
+            0 8px 12px
+            rgba(0,0,0,.4)
+        );
+}
+
+.start-title{
+
+    font-size:38px;
+
+    font-weight:1000;
+
+    letter-spacing:5px;
+}
+
+.start-subtitle{
+
+    color:#8d9daa;
+
+    margin-top:6px;
+
+    font-size:13px;
+}
+
+
+/* =========================================================
+   NOMBRE
+========================================================= */
+
+.username-box{
+
+    padding:17px;
+
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #162530,
+            #101920
+        );
+
+    border:
+        1px solid
+        rgba(76,201,240,.22);
+
+    margin-bottom:13px;
+}
+
+.username-label{
+
+    font-size:13px;
+
+    font-weight:900;
+
+    margin-bottom:5px;
+}
+
+.username-description{
+
+    color:#84939f;
+
+    font-size:11px;
+
+    margin-bottom:10px;
+}
+
+.username-input{
+
+    width:100%;
+
+    padding:13px 14px;
+
+    border-radius:9px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    outline:none;
+
+    background:#080f15;
+
+    color:white;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    transition:.15s;
+}
+
+.username-input:focus{
+
+    border-color:#4cc9f0;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(76,201,240,.08);
+}
+
+.username-input::placeholder{
+
+    color:#53636f;
+}
+
+
+/* =========================================================
+   START GRID
+========================================================= */
+
+.start-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:13px;
+
+    margin-top:13px;
+}
+
+.start-option{
+
+    padding:17px;
+
+    border-radius:13px;
+
+    background:#111a22;
+
+    border:
+        1px solid rgba(255,255,255,.06);
+
+    cursor:pointer;
+
+    transition:.16s;
+}
+
+.start-option:hover{
+
+    background:#192731;
+
+    border-color:
+        rgba(76,201,240,.25);
+
+    transform:translateY(-1px);
+}
+
+.start-option.active{
+
+    background:
+        linear-gradient(
+            145deg,
+            #1d3950,
+            #172b3a
+        );
+
+    border-color:
+        rgba(76,201,240,.65);
+
+    box-shadow:
+        0 0 0 1px
+        rgba(76,201,240,.12);
+}
+
+.option-title{
+
+    font-weight:900;
+
+    font-size:15px;
+
+    margin-bottom:4px;
+}
+
+.option-description{
+
+    color:#84939f;
+
+    font-size:11px;
+
+    line-height:1.5;
+}
+
+
+/* =========================================================
+   SELECTS
+========================================================= */
+
+select{
+
+    width:100%;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:7px;
+
+    padding:9px;
+
+    color:white;
+
+    background:#263642;
+
+    font-size:11px;
+
+    font-weight:800;
+
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   COLORES
+========================================================= */
+
+.color-choice{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr 1fr;
+
+    gap:9px;
+
+    margin-top:9px;
+}
+
+.color-button{
+
+    padding:12px 8px;
+
+    border-radius:10px;
+
+    background:#10171e;
+
+    border:
+        1px solid rgba(255,255,255,.05);
+
+    color:#dfe7ed;
+
+    cursor:pointer;
+
+    text-align:center;
+
+    font-weight:800;
+
+    font-size:12px;
+}
+
+.color-button.active{
+
+    border-color:#4cc9f0;
+
+    background:#20384a;
+
+}
+
+.color-symbol{
+
+    display:block;
+
+    font-size:27px;
+
+    margin-bottom:3px;
+}
+
+
+/* =========================================================
+   BOTÓN JUGAR
+========================================================= */
+
+.start-play{
+
+    width:100%;
+
+    margin-top:22px;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3f86f5,
+            #315ad7
+        );
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 10px 28px
+        rgba(49,90,215,.3);
+
+    transition:.15s;
+}
+
+.start-play:hover{
+
+    filter:brightness(1.12);
+
+    transform:translateY(-1px);
+}
+
+.start-play:disabled{
+
+    opacity:.45;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+    filter:none;
+}
+
+.username-warning{
+
+    color:#ff7777;
+
+    font-size:10px;
+
+    margin-top:7px;
+
+    display:none;
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app{
+
+    width:
+        min(
+            1280px,
+            calc(100% - 34px)
+        );
+
+    margin:20px auto 35px;
+
+    display:grid;
+
+    grid-template-columns:
+        minmax(420px,650px)
+        330px;
+
+    gap:22px;
+
+    justify-content:center;
+
+    align-items:start;
+}
+
+
+/* =========================================================
+   GAME
+========================================================= */
+
+.game-area{
+
+    min-width:0;
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+.game-top{
+
+    height:28px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:7px;
+}
+
+.game-title{
+
+    font-size:14px;
+
+    font-weight:900;
+
+    color:#dce5eb;
+}
+
+.game-state{
+
+    font-size:11px;
+
+    color:#83919d;
+}
+
+
+/* =========================================================
+   PLAYER
+========================================================= */
+
+.player-bar{
+
+    height:52px;
+
+    padding:7px 10px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    background:
+        linear-gradient(
+            135deg,
+            #17232d,
+            #101820
+        );
+
+    border:
+        1px solid rgba(255,255,255,.06);
+
+    border-radius:10px;
+
+    margin-bottom:7px;
+
+    flex-shrink:0;
+}
+
+.player{
+
+    display:flex;
+    align-items:center;
+
+    gap:9px;
+}
+
+.avatar{
+
+    width:34px;
+    height:34px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#263542;
+
+    font-size:17px;
+}
+
+.player-name{
+
+    font-size:12px;
+
+    font-weight:900;
+}
+
+.player-rating{
+
+    font-size:9px;
+
+    color:#82909c;
+
+    margin-top:1px;
+}
+
+.clock{
+
+    min-width:80px;
+
+    padding:6px 10px;
+
+    border-radius:7px;
+
+    background:#080d12;
+
+    font-size:17px;
+
+    font-weight:900;
+
+    text-align:center;
+
+    font-variant-numeric:
+        tabular-nums;
+
+    border:
+        1px solid rgba(255,255,255,.05);
+}
+
+.clock.active{
+
+    color:#8ce6a4;
+
+    background:#203728;
+
+    box-shadow:
+        0 0 0 1px
+        rgba(80,210,120,.15);
+}
+
+
+/* =========================================================
+   TABLERO
+========================================================= */
+
+.board-container{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    flex:none;
+}
+
+.board{
+
+    width:
+        min(
+            620px,
+            100%
+        );
+
+    aspect-ratio:1 / 1;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(8, minmax(0, 1fr));
+
+    grid-template-rows:
+        repeat(8, minmax(0, 1fr));
+
+    border:
+        5px solid #080d12;
+
+    border-radius:7px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.45);
+
+    flex:none;
+
+    /* El tablero conserva siempre proporción 1:1 */
+    contain:layout paint;
+}
+
+
+/* =========================================================
+   CASILLAS
+========================================================= */
+
+.square{
+
+    position:relative;
+
+    min-width:0;
+    min-height:0;
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    user-select:none;
+
+    overflow:hidden;
+}
+
+.light{
+
+    background:#e8d0a9;
+}
+
+.dark{
+
+    background:#a97852;
+}
+
+
+/* =========================================================
+   PIEZAS
+========================================================= */
+
+.piece{
+
+    width:83%;
+    height:83%;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-family:
+        "DejaVu Sans",
+        "Segoe UI Symbol",
+        serif;
+
+    font-size:
+        clamp(
+            27px,
+            5.8vw,
+            58px
+        );
+
+    line-height:1;
+
+    pointer-events:none;
+
+    z-index:4;
+
+    transform:translateZ(0);
+
+    transition:
+        transform .1s ease;
+}
+
+.square:hover .piece{
+
+    transform:scale(1.035);
+}
+
+.white-piece{
+
+    color:#fff;
+
+    text-shadow:
+        0 1px 0 #333,
+        1px 0 0 #333,
+        -1px 0 0 #333,
+        0 -1px 0 #333,
+        0 4px 5px
+        rgba(0,0,0,.35);
+}
+
+.black-piece{
+
+    color:#222;
+
+    text-shadow:
+        0 2px 3px
+        rgba(255,255,255,.16),
+        0 4px 6px
+        rgba(0,0,0,.45);
+}
+
+
+/* =========================================================
+   MOVIMIENTOS
+========================================================= */
+
+.square.selected{
+
+    box-shadow:
+        inset 0 0 0 4px
+        rgba(255,215,65,.9);
+}
+
+.square.last-move{
+
+    background:#c7b15a;
+}
+
+.square.move::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:21%;
+    height:21%;
+
+    border-radius:50%;
+
+    background:
+        rgba(20,20,20,.28);
+
+    z-index:3;
+}
+
+.square.capture::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:79%;
+    height:79%;
+
+    border-radius:50%;
+
+    border:
+        4px solid
+        rgba(190,45,45,.55);
+
+    z-index:3;
+}
+
+.square.check{
+
+    background:
+        radial-gradient(
+            circle,
+            #ff6c6c,
+            #b72c2c
+        );
+
+    animation:
+        checkPulse .75s infinite;
+}
+
+@keyframes checkPulse{
+
+    50%{
+        filter:brightness(1.18);
+    }
+}
+
+
+/* =========================================================
+   PANEL DERECHO
+========================================================= */
+
+.side-panel{
+
+    min-width:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:11px;
+}
+
+.card{
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(24,35,45,.97),
+            rgba(13,21,28,.97)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.065);
+
+    border-radius:12px;
+
+    padding:14px;
+
+    box-shadow:
+        0 9px 25px
+        rgba(0,0,0,.2);
+}
+
+.card-title{
+
+    color:#8998a5;
+
+    font-size:10px;
+
+    font-weight:1000;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+    margin-bottom:9px;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:9px;
+
+    background:#0b1218;
+
+    border-radius:8px;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    margin-bottom:9px;
+}
+
+.status-dot{
+
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:#59df8a;
+
+    box-shadow:
+        0 0 9px
+        rgba(89,223,138,.6);
+}
+
+
+/* =========================================================
+   BOTONES
+========================================================= */
+
+.action-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:7px;
+}
+
+button{
+
+    border:none;
+
+    outline:none;
+
+    border-radius:7px;
+
+    padding:9px;
+
+    color:white;
+
+    background:#263642;
+
+    font-size:11px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.13s;
+}
+
+button:hover{
+
+    filter:brightness(1.12);
+}
+
+button:active{
+
+    transform:scale(.98);
+}
+
+.primary{
+
+    background:
+        linear-gradient(
+            135deg,
+            #397ff0,
+            #315bd1
+        );
+}
+
+.danger{
+
+    background:
+        linear-gradient(
+            135deg,
+            #bd4147,
+            #8e2931
+        );
+}
+
+.draw{
+
+    background:#394754;
+}
+
+.new-game{
+
+    background:
+        linear-gradient(
+            135deg,
+            #397ff0,
+            #315bd1
+        );
+}
+
+
+/* =========================================================
+   MATERIAL
+========================================================= */
+
+.captured{
+
+    min-height:25px;
+
+    display:flex;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    font-size:18px;
+
+    gap:0;
+}
+
+
+/* =========================================================
+   MOVIMIENTOS
+========================================================= */
+
+.moves{
+
+    height:190px;
+
+    overflow-y:auto;
+
+    background:#0a1117;
+
+    border-radius:8px;
+
+    padding:3px;
+}
+
+.moves::-webkit-scrollbar{
+
+    width:4px;
+}
+
+.moves::-webkit-scrollbar-thumb{
+
+    background:#354652;
+
+    border-radius:4px;
+}
+
+.move-row{
+
+    display:grid;
+
+    grid-template-columns:
+        31px 1fr 1fr;
+
+    padding:6px;
+
+    font-size:11px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.04);
+}
+
+.move-number{
+
+    color:#657580;
+}
+
+
+/* =========================================================
+   HISTORIA
+========================================================= */
+
+.story-text{
+
+    color:#92a1ad;
+
+    font-size:10px;
+
+    line-height:1.45;
+}
+
+.progress{
+
+    height:6px;
+
+    background:#080e13;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+    margin:9px 0 11px;
+}
+
+.progress-fill{
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #4cc9f0,
+            #4361ee
+        );
+
+    transition:.3s;
+}
+
+.level-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    gap:5px;
+}
+
+.level{
+
+    aspect-ratio:1;
+
+    border-radius:7px;
+
+    background:#111a22;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    font-size:11px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.04);
+}
+
+.level.unlocked{
+
+    border-color:
+        rgba(76,201,240,.3);
+}
+
+.level.current{
+
+    background:#20384a;
+
+    border-color:#4cc9f0;
+}
+
+.level.locked{
+
+    opacity:.35;
+
+    cursor:not-allowed;
+}
+
+.level-medal{
+
+    font-size:15px;
+}
+
+
+/* =========================================================
+   MODALES
+========================================================= */
+
+.overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:300;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    background:
+        rgba(0,0,0,.73);
+
+    backdrop-filter:blur(7px);
+
+    padding:20px;
+}
+
+.modal{
+
+    width:
+        min(
+            400px,
+            100%
+        );
+
+    padding:26px;
+
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1c2a35,
+            #101820
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    box-shadow:
+        0 25px 80px
+        rgba(0,0,0,.6);
+
+    text-align:center;
+}
+
+
+/* =========================================================
+   VENTANA INICIAL DE NOMBRE
+========================================================= */
+
+.name-screen{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:500;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle at 50% 25%,
+            rgba(46,82,108,.4),
+            rgba(4,8,12,.98) 70%
+        );
+
+    backdrop-filter:blur(14px);
+}
+
+.name-card{
+
+    width:
+        min(430px,100%);
+
+    padding:32px;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1c2b36,
+            #0e171f
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    box-shadow:
+        0 35px 100px
+        rgba(0,0,0,.65);
+
+    text-align:center;
+}
+
+.name-knight{
+
+    font-size:58px;
+
+    margin-bottom:7px;
+
+    filter:
+        drop-shadow(
+            0 8px 12px
+            rgba(0,0,0,.4)
+        );
+}
+
+.name-title{
+
+    font-size:31px;
+
+    font-weight:1000;
+
+    letter-spacing:4px;
+}
+
+.name-subtitle{
+
+    margin-top:7px;
+
+    color:#8797a4;
+
+    font-size:12px;
+
+    line-height:1.5;
+}
+
+.name-label{
+
+    display:block;
+
+    margin-top:25px;
+
+    margin-bottom:8px;
+
+    text-align:left;
+
+    font-size:12px;
+
+    font-weight:900;
+
+    color:#dce6ed;
+}
+
+.name-input{
+
+    width:100%;
+
+    padding:14px;
+
+    border-radius:10px;
+
+    outline:none;
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    background:#080f15;
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    text-align:center;
+}
+
+.name-input:focus{
+
+    border-color:#4cc9f0;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(76,201,240,.08);
+}
+
+.name-button{
+
+    width:100%;
+
+    margin-top:14px;
+
+    padding:14px;
+
+    border-radius:10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #3f86f5,
+            #315ad7
+        );
+
+    font-size:14px;
+
+    font-weight:900;
+}
+
+.name-warning{
+
+    display:none;
+
+    margin-top:8px;
+
+    color:#ff7777;
+
+    font-size:10px;
+}
+
+
+/* =========================================================
+   PROMOCIÓN
+========================================================= */
+
+.promotion-buttons{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:8px;
+
+    margin-top:17px;
+}
+
+.promotion-buttons button{
+
+    font-size:40px;
+
+    padding:8px;
+}
+
+
+/* =========================================================
+   RESULTADO
+========================================================= */
+
+.result-icon{
+
+    font-size:46px;
+
+    margin-bottom:5px;
+}
+
+.result-title{
+
+    font-size:23px;
+
+    font-weight:1000;
+}
+
+.result-text{
+
+    color:#9aa9b5;
+
+    margin-top:6px;
+
+    font-size:12px;
+}
+
+.result-buttons{
+
+    display:flex;
+
+    gap:7px;
+
+    margin-top:18px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1050px){
+
+    .app{
+
+        grid-template-columns:
+            minmax(400px,620px)
+            300px;
+
+        gap:15px;
+    }
+
+}
+
+
+@media(max-width:850px){
+
+    .app{
+
+        width:
+            min(
+                650px,
+                calc(100% - 18px)
+            );
+
+        grid-template-columns:1fr;
+    }
+
+    .side-panel{
+
+        display:grid;
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+}
+
+
+@media(max-width:600px){
+
+    .header{
+
+        height:60px;
+
+        padding:0 13px;
+    }
+
+    .header-pill{
+
+        display:none;
+    }
+
+    .logo-name{
+
+        font-size:18px;
+    }
+
+    .app{
+
+        width:100%;
+
+        margin:8px 0 20px;
+    }
+
+    .board{
+
+        width:100%;
+
+        border-width:3px;
+
+        border-radius:4px;
+    }
+
+    .piece{
+
+        font-size:
+            clamp(
+                25px,
+                11.8vw,
+                52px
+            );
+    }
+
+    .side-panel{
+
+        display:flex;
+
+        padding:0 7px;
+    }
+
+    .start-card{
+
+        padding:20px;
+
+        border-radius:17px;
+    }
+
+    .start-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .start-title{
+
+        font-size:30px;
+    }
+
+    .name-card{
+
+        padding:25px 20px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     PRIMERA VENTANA: NOMBRE
+     
+     ESTA ES LA PRIMERA VENTANA QUE VE EL USUARIO.
+     NO SE GUARDA EL NOMBRE EN LOCALSTORAGE.
+     PARA CAMBIARLO HAY QUE RECARGAR LA PÁGINA.
+========================================================= -->
+
+<div
+    id="nameScreen"
+    class="name-screen"
+>
+
+    <div class="name-card">
+
+        <div class="name-knight">
+            ♞
+        </div>
+
+        <div class="name-title">
+            MATCHESS
+        </div>
+
+        <div class="name-subtitle">
+            Bienvenido a tu partida de ajedrez.
+            <br>
+            Primero crea tu identidad de jugador.
+        </div>
+
+
+        <label
+            class="name-label"
+            for="nameInput"
+        >
+            👤 Nombre de usuario
+        </label>
+
+        <input
+            id="nameInput"
+            class="name-input"
+            type="text"
+            maxlength="18"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Escribe tu nombre..."
+        >
+
+        <div
+            id="nameWarning"
+            class="name-warning"
+        >
+            Escribe un nombre para continuar.
+        </div>
+
+        <button
+            id="nameContinue"
+            class="name-button"
+        >
+            CONTINUAR
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     PANTALLA DE MENÚ
+========================================================= -->
+
+<div
+    id="startScreen"
+    class="start-screen"
+>
+
+    <div class="start-card">
+
+
+        <div class="start-brand">
+
+            <div class="start-knight">
+                ♞
+            </div>
+
+            <div class="start-title">
+                MATCHESS
+            </div>
+
+            <div class="start-subtitle">
+                Juega. Piensa. Domina el tablero.
+            </div>
+
+        </div>
+
+
+        <!-- USUARIO -->
+
+        <div class="username-box">
+
+            <div class="username-label">
+                👤 Jugador
+            </div>
+
+            <div
+                id="menuUsername"
+                class="option-title"
+                style="margin-top:6px;"
+            >
+                Jugador
+            </div>
+
+            <div class="username-description">
+                Tu nombre queda fijado durante esta sesión.
+                Recarga la página para comenzar con otro nombre.
+            </div>
+
+        </div>
+
+
+        <!-- MODO -->
+
+        <div class="start-grid">
+
+
+            <div
+                id="botOption"
+                class="start-option active"
+            >
+
+                <div class="option-title">
+                    🤖 Contra MATCHESS
+                </div>
+
+                <div class="option-description">
+                    Enfréntate a la máquina y
+                    desbloquea nuevos rivales.
+                </div>
+
+            </div>
+
+
+            <div
+                id="localOption"
+                class="start-option"
+            >
+
+                <div class="option-title">
+                    👥 Dos jugadores
+                </div>
+
+                <div class="option-description">
+                    Juega con otra persona
+                    en el mismo dispositivo.
+                </div>
+
+            </div>
+
+
+            <!-- NIVEL -->
+
+            <div
+                id="startLevelBox"
+                class="start-option"
+            >
+
+                <div class="option-title">
+                    🏆 Nivel
+                </div>
+
+                <div class="option-description">
+                    Selecciona un rival de
+                    tu historia.
+                </div>
+
+                <select
+                    id="startLevel"
+                    style="margin-top:9px;"
+                >
+
+                    <option value="1">
+                        Nivel 1 · Principiante
+                    </option>
+
+                    <option value="2">
+                        Nivel 2 · Aprendiz
+                    </option>
+
+                    <option value="3">
+                        Nivel 3 · Aficionado
+                    </option>
+
+                    <option value="4">
+                        Nivel 4 · Intermedio
+                    </option>
+
+                    <option value="5">
+                        Nivel 5 · Competidor
+                    </option>
+
+                    <option value="6">
+                        Nivel 6 · Avanzado
+                    </option>
+
+                    <option value="7">
+                        Nivel 7 · Experto
+                    </option>
+
+                    <option value="8">
+                        Nivel 8 · Maestro
+                    </option>
+
+                    <option value="9">
+                        Nivel 9 · Gran maestro
+                    </option>
+
+                    <option value="10">
+                        Nivel 10 · Leyenda
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- TIEMPO -->
+
+            <div class="start-option">
+
+                <div class="option-title">
+                    ⏱️ Tiempo
+                </div>
+
+                <div class="option-description">
+                    Control de tiempo de la partida.
+                </div>
+
+                <select
+                    id="timeSelect"
+                    style="margin-top:9px;"
+                >
+
+                    <option value="300">
+                        5 + 0 · Blitz
+                    </option>
+
+                    <option
+                        value="600"
+                        selected
+                    >
+                        10 + 0 · Rápida
+                    </option>
+
+                    <option value="900">
+                        15 + 0 · Clásica
+                    </option>
+
+                    <option value="1800">
+                        30 + 0 · Larga
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- COLOR -->
+
+        <div
+            class="start-option"
+            style="margin-top:13px;"
+        >
+
+            <div class="option-title">
+                ♟️ Elige tu color
+            </div>
+
+            <div class="option-description">
+                Tus piezas siempre quedarán
+                orientadas hacia ti.
+            </div>
+
+
+            <div class="color-choice">
+
+                <div
+                    class="color-button active"
+                    data-color="w"
+                >
+
+                    <span class="color-symbol">
+                        ♔
+                    </span>
+
+                    Blancas
+
+                </div>
+
+
+                <div
+                    class="color-button"
+                    data-color="b"
+                >
+
+                    <span class="color-symbol">
+                        ♚
+                    </span>
+
+                    Negras
+
+                </div>
+
+
+                <div
+                    class="color-button"
+                    data-color="random"
+                >
+
+                    <span class="color-symbol">
+                        🎲
+                    </span>
+
+                    Aleatorio
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button
+            id="startPlay"
+            class="start-play"
+        >
+            ♟ COMENZAR PARTIDA
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="header">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            ♞
+        </div>
+
+        <div class="logo-name">
+            MATCHESS
+        </div>
+
+    </div>
+
+
+    <div class="header-right">
+
+        <div class="header-pill">
+            ♟ CHESS
+        </div>
+
+        <div class="header-pill">
+            🏆 HISTORIA
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     APP
+========================================================= -->
+
+<main class="app">
+
+
+<section class="game-area">
+
+
+    <div class="game-top">
+
+        <div class="game-title">
+            Partida
+        </div>
+
+        <div
+            id="gameState"
+            class="game-state"
+        >
+            Modo historia
+        </div>
+
+    </div>
+
+
+    <!-- BARRA NEGRA -->
+
+    <div
+        id="blackBar"
+        class="player-bar"
+    >
+
+        <div class="player">
+
+            <div
+                id="blackAvatar"
+                class="avatar"
+            >
+                🤖
+            </div>
+
+            <div>
+
+                <div
+                    id="blackName"
+                    class="player-name"
+                >
+                    MATCHESS
+                </div>
+
+                <div
+                    id="blackRating"
+                    class="player-rating"
+                >
+                    Nivel 1
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="blackClock"
+            class="clock"
+        >
+            10:00
+        </div>
+
+    </div>
+
+
+    <!-- TABLERO -->
+
+    <div class="board-container">
+
+        <div
+            id="board"
+            class="board"
+        ></div>
+
+    </div>
+
+
+    <!-- BARRA BLANCA -->
+
+    <div
+        id="whiteBar"
+        class="player-bar"
+        style="margin-top:7px;"
+    >
+
+        <div class="player">
+
+            <div
+                id="whiteAvatar"
+                class="avatar"
+            >
+                ♙
+            </div>
+
+            <div>
+
+                <div
+                    id="whiteName"
+                    class="player-name"
+                >
+                    Jugador
+                </div>
+
+                <div
+                    id="whiteRating"
+                    class="player-rating"
+                >
+                    Jugador
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="whiteClock"
+            class="clock active"
+        >
+            10:00
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- PANEL -->
+
+<aside class="side-panel">
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Controles
+        </div>
+
+
+        <div class="status">
+
+            <span
+                id="statusDot"
+                class="status-dot"
+            ></span>
+
+            <span id="status">
+                Turno: Blancas
+            </span>
+
+        </div>
+
+
+        <div class="action-grid">
+
+            <button
+                id="newGame"
+                class="primary"
+            >
+                ↻ Nueva
+            </button>
+
+            <button
+                id="resign"
+                class="danger"
+            >
+                🏳 Rendirse
+            </button>
+
+            <button
+                id="offerDraw"
+                class="draw"
+            >
+                🤝 Ofrecer tablas
+            </button>
+
+            <button
+                id="backMenu"
+                class="draw"
+            >
+                ☰ Menú
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Material capturado
+        </div>
+
+        <div
+            id="captured"
+            class="captured"
+        >
+            —
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Movimientos
+        </div>
+
+        <div
+            id="moves"
+            class="moves"
+        ></div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            🏆 Historia
+        </div>
+
+        <div
+            id="storyText"
+            class="story-text"
+        >
+            Desbloquea nuevos rivales
+            derrotándolos.
+        </div>
+
+
+        <div class="progress">
+
+            <div
+                id="progressBar"
+                class="progress-fill"
+                style="width:10%"
+            ></div>
+
+        </div>
+
+
+        <div
+            id="levels"
+            class="level-grid"
+        ></div>
+
+    </div>
+
+
+</aside>
+
+</main>
+
+
+<!-- =========================================================
+     PROMOCIÓN
+========================================================= -->
+
+<div
+    id="promotionOverlay"
+    class="overlay"
+>
+
+    <div class="modal">
+
+        <div
+            style="
+            font-size:25px;
+            font-weight:1000;
+            "
+        >
+            Promoción
+        </div>
+
+        <div
+            style="
+            color:#93a1ad;
+            margin-top:4px;
+            font-size:12px;
+            "
+        >
+            Elige la nueva pieza
+        </div>
+
+
+        <div class="promotion-buttons">
+
+            <button data-piece="Q">
+                ♕
+            </button>
+
+            <button data-piece="R">
+                ♖
+            </button>
+
+            <button data-piece="B">
+                ♗
+            </button>
+
+            <button data-piece="N">
+                ♘
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     RESULTADO
+========================================================= -->
+
+<div
+    id="resultOverlay"
+    class="overlay"
+>
+
+    <div class="modal">
+
+        <div
+            id="resultIcon"
+            class="result-icon"
+        >
+            🏆
+        </div>
+
+        <div
+            id="resultTitle"
+            class="result-title"
+        >
+            Victoria
+        </div>
+
+        <div
+            id="resultText"
+            class="result-text"
+        >
+            Has ganado la partida.
+        </div>
+
+
+        <div class="result-buttons">
+
+            <button
+                id="resultAgain"
+                class="primary"
+            >
+                Nueva partida
+            </button>
+
+            <button
+                id="resultMenu"
+                class="draw"
+            >
+                Menú
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const boardElement =
+    document.getElementById("board");
+
+const statusElement =
+    document.getElementById("status");
+
+const statusDot =
+    document.getElementById("statusDot");
+
+const movesElement =
+    document.getElementById("moves");
+
+const capturedElement =
+    document.getElementById("captured");
+
+const whiteClock =
+    document.getElementById("whiteClock");
+
+const blackClock =
+    document.getElementById("blackClock");
+
+const gameState =
+    document.getElementById("gameState");
+
+const blackName =
+    document.getElementById("blackName");
+
+const blackRating =
+    document.getElementById("blackRating");
+
+const blackAvatar =
+    document.getElementById("blackAvatar");
+
+const whiteName =
+    document.getElementById("whiteName");
+
+const whiteRating =
+    document.getElementById("whiteRating");
+
+const whiteAvatar =
+    document.getElementById("whiteAvatar");
+
+const blackBar =
+    document.getElementById("blackBar");
+
+const whiteBar =
+    document.getElementById("whiteBar");
+
+const levelGrid =
+    document.getElementById("levels");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const storyText =
+    document.getElementById("storyText");
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const startPlay =
+    document.getElementById("startPlay");
+
+const botOption =
+    document.getElementById("botOption");
+
+const localOption =
+    document.getElementById("localOption");
+
+const startLevelBox =
+    document.getElementById("startLevelBox");
+
+const startLevel =
+    document.getElementById("startLevel");
+
+const timeSelect =
+    document.getElementById("timeSelect");
+
+const newGameBtn =
+    document.getElementById("newGame");
+
+const resignBtn =
+    document.getElementById("resign");
+
+const offerDrawBtn =
+    document.getElementById("offerDraw");
+
+const backMenuBtn =
+    document.getElementById("backMenu");
+
+const promotionOverlay =
+    document.getElementById(
+        "promotionOverlay"
+    );
+
+const resultOverlay =
+    document.getElementById(
+        "resultOverlay"
+    );
+
+const resultIcon =
+    document.getElementById(
+        "resultIcon"
+    );
+
+const resultTitle =
+    document.getElementById(
+        "resultTitle"
+    );
+
+const resultText =
+    document.getElementById(
+        "resultText"
+    );
+
+const resultAgain =
+    document.getElementById(
+        "resultAgain"
+    );
+
+const resultMenu =
+    document.getElementById(
+        "resultMenu"
+    );
+
+
+/* =========================================================
+   NUEVO SISTEMA DE IDENTIDAD
+========================================================= */
+
+const nameScreen =
+    document.getElementById(
+        "nameScreen"
+    );
+
+const nameInput =
+    document.getElementById(
+        "nameInput"
+    );
+
+const nameContinue =
+    document.getElementById(
+        "nameContinue"
+    );
+
+const nameWarning =
+    document.getElementById(
+        "nameWarning"
+    );
+
+const menuUsername =
+    document.getElementById(
+        "menuUsername"
+    );
+
+
+/* =========================================================
+   CONFIGURACIÓN
+========================================================= */
+
+let mode="bot";
+
+let playerColor="w";
+
+let currentLevel=1;
+
+let startingTime=600;
+
+/*
+    IMPORTANTE:
+    El nombre NO se guarda en localStorage.
+    Solo existe mientras la página está abierta.
+*/
+
+let username="";
+
+
+/* =========================================================
+   ESTADO
+========================================================= */
+
+let board=[];
+
+let turn="w";
+
+let selected=null;
+
+let legalMoves=[];
+
+let history=[];
+
+let captured=[];
+
+let enPassant=null;
+
+let lastMove=null;
+
+let gameOver=false;
+
+let pendingPromotion=null;
+
+let whiteTime=600;
+
+let blackTime=600;
+
+let clockInterval=null;
+
+let drawOffered=false;
+
+
+/* =========================================================
+   ENROQUE
+========================================================= */
+
+let castleRights={
+
+    wK:true,
+    wQ:true,
+    bK:true,
+    bQ:true
+
+};
+
+
+/* =========================================================
+   SÍMBOLOS
+========================================================= */
+
+const symbols={
+
+    w:{
+        K:"♔",
+        Q:"♕",
+        R:"♖",
+        B:"♗",
+        N:"♘",
+        P:"♙"
+    },
+
+    b:{
+        K:"♚",
+        Q:"♛",
+        R:"♜",
+        B:"♝",
+        N:"♞",
+        P:"♟"
+    }
+
+};
+
+
+/* =========================================================
+   VALORES
+========================================================= */
+
+const values={
+
+    P:100,
+    N:320,
+    B:330,
+    R:500,
+    Q:900,
+    K:20000
+
+};
+
+
+/* =========================================================
+   PRIMERA VENTANA: NOMBRE
+========================================================= */
+
+function confirmUsername(){
+
+    const value =
+        nameInput.value.trim();
+
+
+    if(!value){
+
+        nameWarning.style.display =
+            "block";
+
+        nameInput.focus();
+
+        return;
+
+    }
+
+
+    if(value.length<2){
+
+        nameWarning.textContent =
+            "El nombre debe tener al menos 2 caracteres.";
+
+        nameWarning.style.display =
+            "block";
+
+        nameInput.focus();
+
+        return;
+
+    }
+
+
+    username=value;
+
+
+    menuUsername.textContent =
+        username;
+
+
+    /*
+       Cerramos definitivamente
+       la ventana de identidad.
+    */
+
+    nameScreen.style.display =
+        "none";
+
+
+    /*
+       Ahora aparece el menú principal.
+    */
+
+    startScreen.style.display =
+        "flex";
+
+
+    nameWarning.style.display =
+        "none";
+
+}
+
+
+/*
+   Botón CONTINUAR
+*/
+
+nameContinue.addEventListener(
+    "click",
+    confirmUsername
+);
+
+
+/*
+   ENTER también confirma.
+*/
+
+nameInput.addEventListener(
+    "keydown",
+    event=>{
+
+        if(
+            event.key==="Enter"
+        ){
+
+            event.preventDefault();
+
+            confirmUsername();
+
+        }
+
+    }
+);
+
+
+/*
+   Ocultamos el aviso mientras
+   el usuario escribe.
+*/
+
+nameInput.addEventListener(
+    "input",
+    ()=>{
+
+        if(
+            nameInput.value.trim()
+        ){
+
+            nameWarning.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+
+/*
+   La ventana de nombre es la primera
+   que aparece siempre.
+*/
+
+nameScreen.style.display =
+    "flex";
+
+startScreen.style.display =
+    "none";
+
+
+/*
+   Enfocar automáticamente el campo.
+*/
+
+setTimeout(
+    ()=>{
+        nameInput.focus();
+    },
+    100
+);
+
+
+/* =========================================================
+   SELECCIÓN DE COLOR
+========================================================= */
+
+document
+.querySelectorAll(".color-button")
+.forEach(
+    button=>{
+
+        button.addEventListener(
+            "click",
+            ()=>{
+
+                document
+                .querySelectorAll(
+                    ".color-button"
+                )
+                .forEach(
+                    b=>
+                        b.classList.remove(
+                            "active"
+                        )
+                );
+
+                button.classList.add(
+                    "active"
+                );
+
+                playerColor=
+                    button.dataset.color;
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   SELECCIÓN DE MODO
+========================================================= */
+
+botOption.addEventListener(
+    "click",
+    ()=>{
+
+        mode="bot";
+
+        botOption.classList.add(
+            "active"
+        );
+
+        localOption.classList.remove(
+            "active"
+        );
+
+        startLevelBox.style.opacity =
+            "1";
+
+        startLevel.disabled=false;
+
+    }
+);
+
+
+localOption.addEventListener(
+    "click",
+    ()=>{
+
+        mode="local";
+
+        localOption.classList.add(
+            "active"
+        );
+
+        botOption.classList.remove(
+            "active"
+        );
+
+        startLevelBox.style.opacity =
+            ".5";
+
+        startLevel.disabled=true;
+
+    }
+);
+
+
+/* =========================================================
+   COMENZAR
+========================================================= */
+
+startPlay.addEventListener(
+    "click",
+    ()=>{
+
+        /*
+           El nombre ya fue establecido
+           en la primera pantalla.
+        */
+
+        if(!username){
+
+            /*
+               Por seguridad, si alguien intenta
+               saltarse la pantalla de nombre,
+               volvemos a mostrarla.
+            */
+
+            startScreen.style.display =
+                "none";
+
+            nameScreen.style.display =
+                "flex";
+
+            nameInput.focus();
+
+            return;
+
+        }
+
+
+        currentLevel=
+            Number(
+                startLevel.value
+            );
+
+        startingTime=
+            Number(
+                timeSelect.value
+            );
+
+
+        if(
+            mode==="bot" &&
+            currentLevel>
+            getUnlockedLevel()
+        ){
+
+            currentLevel=
+                getUnlockedLevel();
+
+        }
+
+
+        if(
+            playerColor==="random"
+        ){
+
+            playerColor=
+                Math.random()<.5
+                ?"w"
+                :"b";
+
+        }
+
+
+        startScreen.style.display =
+            "none";
+
+
+        newGame();
+
+    }
+);
+
+
+/* =========================================================
+   TABLERO INICIAL
+========================================================= */
+
+function createInitialBoard(){
+
+    const back=[
+        "R",
+        "N",
+        "B",
+        "Q",
+        "K",
+        "B",
+        "N",
+        "R"
+    ];
+
+
+    board=
+        Array.from(
+            {length:8},
+            ()=>Array(8).fill(null)
+        );
+
+
+    for(
+        let c=0;
+        c<8;
+        c++
+    ){
+
+        board[0][c]={
+            color:"b",
+            type:back[c]
+        };
+
+        board[1][c]={
+            color:"b",
+            type:"P"
+        };
+
+        board[6][c]={
+            color:"w",
+            type:"P"
+        };
+
+        board[7][c]={
+            color:"w",
+            type:back[c]
+        };
+
+    }
+
+}
+
+
+/* =========================================================
+   ORIENTACIÓN
+========================================================= */
+
+function getVisualCoordinates(
+    r,
+    c
+){
+
+    if(playerColor==="b"){
+
+        return {
+
+            r:7-r,
+
+            c:7-c
+
+        };
+
+    }
+
+
+    return {
+
+        r,
+
+        c
+
+    };
+
+}
+
+
+/* =========================================================
+   RENDER DEL TABLERO
+========================================================= */
+
+/*
+   IMPORTANTE:
+   Las coordenadas han sido eliminadas
+   completamente.
+
+   El tablero únicamente contiene:
+   - casillas
+   - piezas
+   - indicadores de movimiento
+   - selección
+   - jaque
+========================================================= */
+
+function renderBoard(){
+
+    boardElement.innerHTML="";
+
+
+    for(
+        let vr=0;
+        vr<8;
+        vr++
+    ){
+
+        for(
+            let vc=0;
+            vc<8;
+            vc++
+        ){
+
+            let r=vr;
+            let c=vc;
+
+
+            /*
+               Girar tablero para negras.
+            */
+
+            if(
+                playerColor==="b"
+            ){
+
+                r=7-vr;
+                c=7-vc;
+
+            }
+
+
+            const square=
+                document.createElement(
+                    "div"
+                );
+
+
+            square.className=
+                "square "+
+                (
+                    (r+c)%2===0
+                    ?"light"
+                    :"dark"
+                );
+
+
+            square.dataset.r=r;
+            square.dataset.c=c;
+
+
+            /* ÚLTIMO MOVIMIENTO */
+
+            if(
+                lastMove &&
+                (
+                    (
+                        lastMove.from.r===r &&
+                        lastMove.from.c===c
+                    )
+                    ||
+                    (
+                        lastMove.to.r===r &&
+                        lastMove.to.c===c
+                    )
+                )
+            ){
+
+                square.classList.add(
+                    "last-move"
+                );
+
+            }
+
+
+            /* SELECCIÓN */
+
+            if(
+                selected &&
+                selected.r===r &&
+                selected.c===c
+            ){
+
+                square.classList.add(
+                    "selected"
+                );
+
+            }
+
+
+            /* PIEZA */
+
+            const piece=
+                board[r][c];
+
+
+            if(piece){
+
+                const element=
+                    document.createElement(
+                        "span"
+                    );
+
+                element.className=
+                    "piece "+
+                    (
+                        piece.color==="w"
+                        ?"white-piece"
+                        :"black-piece"
+                    );
+
+                element.textContent=
+                    symbols[
+                        piece.color
+                    ][
+                        piece.type
+                    ];
+
+                square.appendChild(
+                    element
+                );
+
+            }
+
+
+            /* MOVIMIENTO */
+
+            const move=
+                legalMoves.find(
+                    m=>
+                        m.r===r &&
+                        m.c===c
+                );
+
+
+            if(move){
+
+                if(piece){
+
+                    square.classList.add(
+                        "capture"
+                    );
+
+                }
+                else{
+
+                    square.classList.add(
+                        "move"
+                    );
+
+                }
+
+            }
+
+
+            square.addEventListener(
+                "click",
+                handleSquareClick
+            );
+
+
+            boardElement.appendChild(
+                square
+            );
+
+        }
+
+    }
+
+
+    highlightCheck();
+
+}
+
+
+/* =========================================================
+   CLICK
+========================================================= */
+
+function handleSquareClick(
+    event
+){
+
+    if(gameOver)
+        return;
+
+
+    if(
+        mode==="bot" &&
+        turn!==playerColor
+    )
+        return;
+
+
+    const square=
+        event.currentTarget;
+
+
+    const r=
+        Number(
+            square.dataset.r
+        );
+
+    const c=
+        Number(
+            square.dataset.c
+        );
+
+
+    const piece=
+        board[r][c];
+
+
+    if(selected){
+
+        const move=
+            legalMoves.find(
+                m=>
+                    m.r===r &&
+                    m.c===c
+            );
+
+
+        if(move){
+
+            makeMove({
+
+                from:{
+                    ...selected
+                },
+
+                to:{
+                    r,
+                    c
+                },
+
+                castle:move.castle,
+
+                enPassant:
+                    move.enPassant,
+
+                promotion:null
+
+            });
+
+            return;
+
+        }
+
+    }
+
+
+    if(
+        piece &&
+        piece.color===turn
+    ){
+
+        selected={
+            r,
+            c
+        };
+
+        legalMoves=
+            getLegalMoves(
+                r,
+                c
+            );
+
+    }
+    else{
+
+        selected=null;
+
+        legalMoves=[];
+
+    }
+
+
+    renderBoard();
+
+}
+
+
+/* =========================================================
+   MOVIMIENTOS PSEUDO
+========================================================= */
+
+function getPseudoMoves(
+    r,
+    c
+){
+
+    const piece=
+        board[r][c];
+
+
+    if(!piece)
+        return [];
+
+
+    const moves=[];
+
+    const color=
+        piece.color;
+
+    const dir=
+        color==="w"
+        ?-1
+        :1;
+
+
+    function add(nr,nc){
+
+        if(
+            nr<0 ||
+            nr>7 ||
+            nc<0 ||
+            nc>7
+        )
+            return;
+
+
+        const target=
+            board[nr][nc];
+
+
+        if(!target){
+
+            moves.push({
+                r:nr,
+                c:nc
+            });
+
+        }
+        else if(
+            target.color!==color
+        ){
+
+            moves.push({
+                r:nr,
+                c:nc
+            });
+
+        }
+
+    }
+
+
+    /* PEÓN */
+
+    if(
+        piece.type==="P"
+    ){
+
+        const nr=
+            r+dir;
+
+
+        if(
+            nr>=0 &&
+            nr<8 &&
+            !board[nr][c]
+        ){
+
+            moves.push({
+                r:nr,
+                c
+            });
+
+
+            const start=
+                color==="w"
+                ?6
+                :1;
+
+
+            if(
+                r===start &&
+                !board[
+                    r+2*dir
+                ][c]
+            ){
+
+                moves.push({
+                    r:r+2*dir,
+                    c
+                });
+
+            }
+
+        }
+
+
+        for(
+            const dc of [-1,1]
+        ){
+
+            const nr2=
+                r+dir;
+
+            const nc2=
+                c+dc;
+
+
+            if(
+                nr2>=0 &&
+                nr2<8 &&
+                nc2>=0 &&
+                nc2<8
+            ){
+
+                const target=
+                    board[nr2][nc2];
+
+
+                if(
+                    target &&
+                    target.color!==color
+                ){
+
+                    moves.push({
+                        r:nr2,
+                        c:nc2
+                    });
+
+                }
+
+            }
+
+        }
+
+
+        if(enPassant){
+
+            if(
+                enPassant.r===r+dir &&
+                Math.abs(
+                    enPassant.c-c
+                )===1
+            ){
+
+                moves.push({
+
+                    r:enPassant.r,
+
+                    c:enPassant.c,
+
+                    enPassant:true
+
+                });
+
+            }
+
+        }
+
+    }
+
+
+    /* CABALLO */
+
+    if(
+        piece.type==="N"
+    ){
+
+        const jumps=[
+
+            [-2,-1],
+            [-2,1],
+            [-1,-2],
+            [-1,2],
+            [1,-2],
+            [1,2],
+            [2,-1],
+            [2,1]
+
+        ];
+
+
+        for(
+            const [dr,dc]
+            of jumps
+        ){
+
+            add(
+                r+dr,
+                c+dc
+            );
+
+        }
+
+    }
+
+
+    /* TORRE / ALFIL / DAMA */
+
+    if(
+        piece.type==="B" ||
+        piece.type==="R" ||
+        piece.type==="Q"
+    ){
+
+        const directions=[];
+
+
+        if(
+            piece.type==="B" ||
+            piece.type==="Q"
+        ){
+
+            directions.push(
+
+                [-1,-1],
+                [-1,1],
+                [1,-1],
+                [1,1]
+
+            );
+
+        }
+
+
+        if(
+            piece.type==="R" ||
+            piece.type==="Q"
+        ){
+
+            directions.push(
+
+                [-1,0],
+                [1,0],
+                [0,-1],
+                [0,1]
+
+            );
+
+        }
+
+
+        for(
+            const [dr,dc]
+            of directions
+        ){
+
+            let nr=r+dr;
+            let nc=c+dc;
+
+
+            while(
+                nr>=0 &&
+                nr<8 &&
+                nc>=0 &&
+                nc<8
+            ){
+
+                if(
+                    !board[nr][nc]
+                ){
+
+                    moves.push({
+                        r:nr,
+                        c:nc
+                    });
+
+                }
+                else{
+
+                    if(
+                        board[nr][nc].color
+                        !==color
+                    ){
+
+                        moves.push({
+                            r:nr,
+                            c:nc
+                        });
+
+                    }
+
+                    break;
+
+                }
+
+
+                nr+=dr;
+                nc+=dc;
+
+            }
+
+        }
+
+    }
+
+
+    /* REY */
+
+    if(
+        piece.type==="K"
+    ){
+
+        for(
+            let dr=-1;
+            dr<=1;
+            dr++
+        ){
+
+            for(
+                let dc=-1;
+                dc<=1;
+                dc++
+            ){
+
+                if(
+                    dr===0 &&
+                    dc===0
+                )
+                    continue;
+
+
+                add(
+                    r+dr,
+                    c+dc
+                );
+
+            }
+
+        }
+
+
+        const enemy=
+            color==="w"
+            ?"b"
+            :"w";
+
+
+        if(
+            !isInCheck(color)
+        ){
+
+            const shortRights=
+                color==="w"
+                ?castleRights.wK
+                :castleRights.bK;
+
+
+            /*
+               ENROQUE CORTO
+            */
+
+            if(
+                shortRights &&
+                !board[r][5] &&
+                !board[r][6] &&
+                board[r][7] &&
+                board[r][7].type==="R" &&
+                board[r][7].color===color &&
+                !isSquareAttacked(
+                    r,
+                    5,
+                    enemy
+                ) &&
+                !isSquareAttacked(
+                    r,
+                    6,
+                    enemy
+                )
+            ){
+
+                moves.push({
+
+                    r,
+                    c:6,
+
+                    castle:"K"
+
+                });
+
+            }
+
+
+            const longRights=
+                color==="w"
+                ?castleRights.wQ
+                :castleRights.bQ;
+
+
+            /*
+               ENROQUE LARGO
+            */
+
+            if(
+                longRights &&
+                !board[r][1] &&
+                !board[r][2] &&
+                !board[r][3] &&
+                board[r][0] &&
+                board[r][0].type==="R" &&
+                board[r][0].color===color &&
+                !isSquareAttacked(
+                    r,
+                    3,
+                    enemy
+                ) &&
+                !isSquareAttacked(
+                    r,
+                    2,
+                    enemy
+                )
+            ){
+
+                moves.push({
+
+                    r,
+                    c:2,
+
+                    castle:"Q"
+
+                });
+
+            }
+
+        }
+
+    }
+
+
+    return moves;
+
+}
+
+
+/* =========================================================
+   CLONAR TABLERO
+========================================================= */
+
+function cloneBoard(b){
+
+    return b.map(
+        row=>
+            row.map(
+                p=>
+                    p
+                    ?{...p}
+                    :null
+            )
+    );
+
+}
+
+
+/* =========================================================
+   APLICAR MOVIMIENTO A COPIA
+========================================================= */
+
+function applyMoveToBoard(
+    b,
+    move
+){
+
+    const piece=
+        b[
+            move.from.r
+        ][
+            move.from.c
+        ];
+
+
+    if(!piece)
+        return;
+
+
+    b[
+        move.to.r
+    ][
+        move.to.c
+    ]={
+        ...piece
+    };
+
+
+    b[
+        move.from.r
+    ][
+        move.from.c
+    ]=null;
+
+
+    if(move.enPassant){
+
+        const row=
+            piece.color==="w"
+            ?move.to.r+1
+            :move.to.r-1;
+
+
+        b[
+            row
+        ][
+            move.to.c
+        ]=null;
+
+    }
+
+
+    if(move.castle){
+
+        const row=
+            move.from.r;
+
+
+        if(
+            move.castle==="K"
+        ){
+
+            b[row][5]=
+                b[row][7];
+
+            b[row][7]=null;
+
+        }
+        else{
+
+            b[row][3]=
+                b[row][0];
+
+            b[row][0]=null;
+
+        }
+
+    }
+
+
+    if(
+        piece.type==="P" &&
+        (
+            move.to.r===0 ||
+            move.to.r===7
+        )
+    ){
+
+        b[
+            move.to.r
+        ][
+            move.to.c
+        ].type=
+            move.promotion || "Q";
+
+    }
+
+}
+
+
+/* =========================================================
+   ENCONTRAR REY
+========================================================= */
+
+function findKing(
+    b,
+    color
+){
+
+    for(
+        let r=0;
+        r<8;
+        r++
+    ){
+
+        for(
+            let c=0;
+            c<8;
+            c++
+        ){
+
+            const p=b[r][c];
+
+
+            if(
+                p &&
+                p.color===color &&
+                p.type==="K"
+            ){
+
+                return {
+                    r,
+                    c
+                };
+
+            }
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   JAQUE
+========================================================= */
+
+function isKingInCheck(
+    b,
+    color
+){
+
+    const king=
+        findKing(
+            b,
+            color
+        );
+
+
+    if(!king)
+        return true;
+
+
+    const enemy=
+        color==="w"
+        ?"b"
+        :"w";
+
+
+    return isSquareAttackedOnBoard(
+        b,
+        king.r,
+        king.c,
+        enemy
+    );
+
+}
+
+
+function isInCheck(color){
+
+    return isKingInCheck(
+        board,
+        color
+    );
+
+}
+
+
+/* =========================================================
+   ATAQUES
+========================================================= */
+
+function isSquareAttacked(
+    r,
+    c,
+    color
+){
+
+    return isSquareAttackedOnBoard(
+        board,
+        r,
+        c,
+        color
+    );
+
+}
+
+
+function isSquareAttackedOnBoard(
+    b,
+    r,
+    c,
+    byColor
+){
+
+    const pawnDir=
+        byColor==="w"
+        ?-1
+        :1;
+
+
+    for(
+        const dc of [-1,1]
+    ){
+
+        const pr=
+            r-pawnDir;
+
+        const pc=
+            c-dc;
+
+
+        if(
+            pr>=0 &&
+            pr<8 &&
+            pc>=0 &&
+            pc<8
+        ){
+
+            const p=
+                b[pr][pc];
+
+
+            if(
+                p &&
+                p.color===byColor &&
+                p.type==="P"
+            )
+                return true;
+
+        }
+
+    }
+
+
+    const jumps=[
+
+        [-2,-1],
+        [-2,1],
+        [-1,-2],
+        [-1,2],
+        [1,-2],
+        [1,2],
+        [2,-1],
+        [2,1]
+
+    ];
+
+
+    for(
+        const [dr,dc]
+        of jumps
+    ){
+
+        const nr=r+dr;
+        const nc=c+dc;
+
+
+        if(
+            nr>=0 &&
+            nr<8 &&
+            nc>=0 &&
+            nc<8
+        ){
+
+            const p=
+                b[nr][nc];
+
+
+            if(
+                p &&
+                p.color===byColor &&
+                p.type==="N"
+            )
+                return true;
+
+        }
+
+    }
+
+
+    for(
+        let dr=-1;
+        dr<=1;
+        dr++
+    ){
+
+        for(
+            let dc=-1;
+            dc<=1;
+            dc++
+        ){
+
+            if(
+                dr===0 &&
+                dc===0
+            )
+                continue;
+
+
+            const nr=r+dr;
+            const nc=c+dc;
+
+
+            if(
+                nr>=0 &&
+                nr<8 &&
+                nc>=0 &&
+                nc<8
+            ){
+
+                const p=
+                    b[nr][nc];
+
+
+                if(
+                    p &&
+                    p.color===byColor &&
+                    p.type==="K"
+                )
+                    return true;
+
+            }
+
+        }
+
+    }
+
+
+    const diagonals=[
+
+        [-1,-1],
+        [-1,1],
+        [1,-1],
+        [1,1]
+
+    ];
+
+
+    for(
+        const [dr,dc]
+        of diagonals
+    ){
+
+        let nr=r+dr;
+        let nc=c+dc;
+
+
+        while(
+            nr>=0 &&
+            nr<8 &&
+            nc>=0 &&
+            nc<8
+        ){
+
+            const p=
+                b[nr][nc];
+
+
+            if(p){
+
+                if(
+                    p.color===byColor &&
+                    (
+                        p.type==="B" ||
+                        p.type==="Q"
+                    )
+                )
+                    return true;
+
+
+                break;
+
+            }
+
+
+            nr+=dr;
+            nc+=dc;
+
+        }
+
+    }
+
+
+    const straights=[
+
+        [-1,0],
+        [1,0],
+        [0,-1],
+        [0,1]
+
+    ];
+
+
+    for(
+        const [dr,dc]
+        of straights
+    ){
+
+        let nr=r+dr;
+        let nc=c+dc;
+
+
+        while(
+            nr>=0 &&
+            nr<8 &&
+            nc>=0 &&
+            nc<8
+        ){
+
+            const p=
+                b[nr][nc];
+
+
+            if(p){
+
+                if(
+                    p.color===byColor &&
+                    (
+                        p.type==="R" ||
+                        p.type==="Q"
+                    )
+                )
+                    return true;
+
+
+                break;
+
+            }
+
+
+            nr+=dr;
+            nc+=dc;
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   MOVIMIENTOS LEGALES
+========================================================= */
+
+function getLegalMoves(
+    r,
+    c
+){
+
+    const piece=
+        board[r][c];
+
+
+    if(!piece)
+        return [];
+
+
+    const pseudo=
+        getPseudoMoves(
+            r,
+            c
+        );
+
+
+    const legal=[];
+
+
+    for(
+        const move of pseudo
+    ){
+
+        const copy=
+            cloneBoard(
+                board
+            );
+
+
+        applyMoveToBoard(
+            copy,
+            {
+                from:{
+                    r,
+                    c
+                },
+
+                to:{
+                    r:move.r,
+                    c:move.c
+                },
+
+                castle:
+                    move.castle,
+
+                enPassant:
+                    move.enPassant,
+
+                promotion:"Q"
+
+            }
+        );
+
+
+        if(
+            !isKingInCheck(
+                copy,
+                piece.color
+            )
+        ){
+
+            legal.push(move);
+
+        }
+
+    }
+
+
+    return legal;
+
+}
+
+
+/* =========================================================
+   TODOS LOS MOVIMIENTOS
+========================================================= */
+
+function getAllLegalMoves(
+    color
+){
+
+    const result=[];
+
+
+    for(
+        let r=0;
+        r<8;
+        r++
+    ){
+
+        for(
+            let c=0;
+            c<8;
+            c++
+        ){
+
+            const piece=
+                board[r][c];
+
+
+            if(
+                piece &&
+                piece.color===color
+            ){
+
+                const moves=
+                    getLegalMoves(
+                        r,
+                        c
+                    );
+
+
+                for(
+                    const m of moves
+                ){
+
+                    result.push({
+
+                        from:{
+                            r,
+                            c
+                        },
+
+                        to:{
+                            r:m.r,
+                            c:m.c
+                        },
+
+                        castle:
+                            m.castle,
+
+                        enPassant:
+                            m.enPassant
+
+                    });
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    return result;
+
+}
+
+
+/* =========================================================
+   HACER MOVIMIENTO
+========================================================= */
+
+function makeMove(move){
+
+    const piece=
+        board[
+            move.from.r
+        ][
+            move.from.c
+        ];
+
+
+    if(
+        piece.type==="P" &&
+        (
+            move.to.r===0 ||
+            move.to.r===7
+        )
+    ){
+
+        pendingPromotion=
+            move;
+
+
+        promotionOverlay.style.display=
+            "flex";
+
+
+        return;
+
+    }
+
+
+    executeMove(move);
+
+}
+
+
+/* =========================================================
+   EJECUTAR
+========================================================= */
+
+function executeMove(move){
+
+    const piece=
+        board[
+            move.from.r
+        ][
+            move.from.c
+        ];
+
+
+    const capturedPiece=
+        board[
+            move.to.r
+        ][
+            move.to.c
+        ];
+
+
+    if(capturedPiece){
+
+        captured.push(
+            capturedPiece
+        );
+
+    }
+
+
+    if(move.enPassant){
+
+        const row=
+            piece.color==="w"
+            ?move.to.r+1
+            :move.to.r-1;
+
+
+        const epPiece=
+            board[
+                row
+            ][
+                move.to.c
+            ];
+
+
+        if(epPiece){
+
+            captured.push(
+                epPiece
+            );
+
+        }
+
+
+        board[
+            row
+        ][
+            move.to.c
+        ]=null;
+
+    }
+
+
+    if(move.castle){
+
+        const row=
+            move.from.r;
+
+
+        if(
+            move.castle==="K"
+        ){
+
+            board[row][5]=
+                board[row][7];
+
+            board[row][7]=null;
+
+        }
+        else{
+
+            board[row][3]=
+                board[row][0];
+
+            board[row][0]=null;
+
+        }
+
+    }
+
+
+    board[
+        move.to.r
+    ][
+        move.to.c
+    ]={
+        ...piece
+    };
+
+
+    board[
+        move.from.r
+    ][
+        move.from.c
+    ]=null;
+
+
+    if(
+        piece.type==="P" &&
+        (
+            move.to.r===0 ||
+            move.to.r===7
+        )
+    ){
+
+        board[
+            move.to.r
+        ][
+            move.to.c
+        ].type=
+            move.promotion || "Q";
+
+    }
+
+
+    updateCastleRights(
+        piece,
+        move,
+        capturedPiece
+    );
+
+
+    enPassant=null;
+
+
+    if(
+        piece.type==="P" &&
+        Math.abs(
+            move.to.r-
+            move.from.r
+        )===2
+    ){
+
+        enPassant={
+
+            r:
+                (
+                    move.from.r+
+                    move.to.r
+                )/2,
+
+            c:
+                move.from.c
+
+        };
+
+    }
+
+
+    lastMove={
+
+        from:{
+            ...move.from
+        },
+
+        to:{
+            ...move.to
+        }
+
+    };
+
+
+    addHistory(
+        piece,
+        move,
+        capturedPiece
+    );
+
+
+    selected=null;
+
+    legalMoves=[];
+
+
+    turn=
+        turn==="w"
+        ?"b"
+        :"w";
+
+
+    renderBoard();
+
+    renderCaptured();
+
+    checkGameState();
+
+    updateClocks();
+
+
+    if(
+        !gameOver &&
+        mode==="bot" &&
+        turn!==playerColor
+    ){
+
+        setTimeout(
+            computerMove,
+            350
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DERECHOS ENROQUE
+========================================================= */
+
+function updateCastleRights(
+    piece,
+    move,
+    captured
+){
+
+    if(
+        piece.type==="K"
+    ){
+
+        if(
+            piece.color==="w"
+        ){
+
+            castleRights.wK=false;
+            castleRights.wQ=false;
+
+        }
+        else{
+
+            castleRights.bK=false;
+            castleRights.bQ=false;
+
+        }
+
+    }
+
+
+    if(
+        piece.type==="R"
+    ){
+
+        if(
+            piece.color==="w"
+        ){
+
+            if(
+                move.from.r===7 &&
+                move.from.c===0
+            )
+                castleRights.wQ=false;
+
+
+            if(
+                move.from.r===7 &&
+                move.from.c===7
+            )
+                castleRights.wK=false;
+
+        }
+        else{
+
+            if(
+                move.from.r===0 &&
+                move.from.c===0
+            )
+                castleRights.bQ=false;
+
+
+            if(
+                move.from.r===0 &&
+                move.from.c===7
+            )
+                castleRights.bK=false;
+
+        }
+
+    }
+
+
+    if(
+        captured &&
+        captured.type==="R"
+    ){
+
+        if(
+            captured.color==="w"
+        ){
+
+            if(
+                move.to.r===7 &&
+                move.to.c===0
+            )
+                castleRights.wQ=false;
+
+
+            if(
+                move.to.r===7 &&
+                move.to.c===7
+            )
+                castleRights.wK=false;
+
+        }
+        else{
+
+            if(
+                move.to.r===0 &&
+                move.to.c===0
+            )
+                castleRights.bQ=false;
+
+
+            if(
+                move.to.r===0 &&
+                move.to.c===7
+            )
+                castleRights.bK=false;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   HISTORIAL
+========================================================= */
+
+function addHistory(
+    piece,
+    move,
+    capturedPiece
+){
+
+    const notation=
+        moveNotation(
+            piece,
+            move,
+            capturedPiece
+        );
+
+
+    if(turn==="w"){
+
+        history.push({
+
+            white:notation,
+
+            black:""
+
+        });
+
+    }
+    else{
+
+        if(
+            history.length===0
+        ){
+
+            history.push({
+
+                white:"",
+
+                black:notation
+
+            });
+
+        }
+        else{
+
+            history[
+                history.length-1
+            ].black=
+                notation;
+
+        }
+
+    }
+
+
+    renderHistory();
+
+}
+
+
+/* =========================================================
+   NOTACIÓN
+========================================================= */
+
+function moveNotation(
+    piece,
+    move,
+    captured
+){
+
+    if(
+        move.castle==="K"
+    )
+        return "O-O";
+
+
+    if(
+        move.castle==="Q"
+    )
+        return "O-O-O";
+
+
+    const files=
+        "abcdefgh";
+
+
+    let text="";
+
+
+    if(
+        piece.type!=="P"
+    ){
+
+        text+=
+            piece.type;
+
+    }
+
+
+    if(captured){
+
+        if(
+            piece.type==="P"
+        ){
+
+            text+=
+                files[
+                    move.from.c
+                ];
+
+        }
+
+        text+="x";
+
+    }
+
+
+    text+=
+        files[
+            move.to.c
+        ]+
+        (
+            8-move.to.r
+        );
+
+
+    if(
+        piece.type==="P" &&
+        (
+            move.to.r===0 ||
+            move.to.r===7
+        )
+    ){
+
+        text+="=Q";
+
+    }
+
+
+    return text;
+
+}
+
+
+/* =========================================================
+   HISTORIAL VISUAL
+========================================================= */
+
+function renderHistory(){
+
+    movesElement.innerHTML="";
+
+
+    history.forEach(
+        (m,i)=>{
+
+            const row=
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className=
+                "move-row";
+
+
+            row.innerHTML=`
+
+                <span class="move-number">
+                    ${i+1}.
+                </span>
+
+                <span>
+                    ${m.white}
+                </span>
+
+                <span>
+                    ${m.black}
+                </span>
+
+            `;
+
+
+            movesElement.appendChild(
+                row
+            );
+
+        }
+    );
+
+
+    movesElement.scrollTop=
+        movesElement.scrollHeight;
+
+}
+
+
+/* =========================================================
+   CAPTURADAS
+========================================================= */
+
+function renderCaptured(){
+
+    capturedElement.innerHTML="";
+
+
+    if(
+        captured.length===0
+    ){
+
+        capturedElement.textContent=
+            "—";
+
+        return;
+
+    }
+
+
+    captured.forEach(
+        piece=>{
+
+            const span=
+                document.createElement(
+                    "span"
+                );
+
+
+            span.textContent=
+                symbols[
+                    piece.color
+                ][
+                    piece.type
+                ];
+
+
+            capturedElement.appendChild(
+                span
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ESTADO DE PARTIDA
+========================================================= */
+
+function checkGameState(){
+
+    const moves=
+        getAllLegalMoves(
+            turn
+        );
+
+
+    const check=
+        isInCheck(
+            turn
+        );
+
+
+    if(
+        moves.length===0
+    ){
+
+        gameOver=true;
+
+        stopClock();
+
+
+        if(check){
+
+            const winner=
+                turn==="w"
+                ?"b"
+                :"w";
+
+
+            const winnerName=
+                winner==="w"
+                ?"Blancas"
+                :"Negras";
+
+
+            statusElement.textContent=
+                `Jaque mate · ${winnerName}`;
+
+
+            statusDot.style.background=
+                "#ef5350";
+
+
+            if(
+                mode==="bot" &&
+                winner===playerColor
+            ){
+
+                unlockCurrentLevel();
+
+
+                showResult(
+                    "🏆",
+                    "¡Victoria!",
+                    "Has ganado la partida."
+                );
+
+            }
+            else{
+
+                showResult(
+                    "♚",
+                    "Jaque mate",
+                    `${winnerName} ganan la partida.`
+                );
+
+            }
+
+        }
+        else{
+
+            statusElement.textContent=
+                "Tablas · Ahogado";
+
+
+            showResult(
+                "½",
+                "Tablas",
+                "La partida terminó en ahogado."
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    if(check){
+
+        statusElement.textContent=
+            `Jaque · Turno ${
+                turn==="w"
+                ?"Blancas"
+                :"Negras"
+            }`;
+
+
+        statusDot.style.background=
+            "#f3c94d";
+
+    }
+    else{
+
+        statusElement.textContent=
+            `Turno ${
+                turn==="w"
+                ?"Blancas"
+                :"Negras"
+            }`;
+
+
+        statusDot.style.background=
+            "#59df8a";
+
+    }
+
+
+    whiteClock.classList.toggle(
+        "active",
+        turn==="w" &&
+        !gameOver
+    );
+
+
+    blackClock.classList.toggle(
+        "active",
+        turn==="b" &&
+        !gameOver
+    );
+
+}
+
+
+/* =========================================================
+   JAQUE VISUAL
+========================================================= */
+
+function highlightCheck(){
+
+    if(
+        !isInCheck(turn)
+    )
+        return;
+
+
+    const king=
+        findKing(
+            board,
+            turn
+        );
+
+
+    if(!king)
+        return;
+
+
+    const visual=
+        getVisualCoordinates(
+            king.r,
+            king.c
+        );
+
+
+    const index=
+        visual.r*8+
+        visual.c;
+
+
+    const square=
+        boardElement.children[
+            index
+        ];
+
+
+    if(square){
+
+        square.classList.add(
+            "check"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MOTOR MATCHESS
+========================================================= */
+
+function computerMove(){
+
+    if(
+        gameOver ||
+        mode!=="bot" ||
+        turn===playerColor
+    )
+        return;
+
+
+    const depthTable={
+
+        1:1,
+        2:1,
+        3:2,
+        4:2,
+        5:2,
+        6:3,
+        7:3,
+        8:3,
+        9:3,
+        10:4
+
+    };
+
+
+    const depth=
+        depthTable[
+            currentLevel
+        ] || 2;
+
+
+    const moves=
+        getAllLegalMoves(
+            turn
+        );
+
+
+    if(!moves.length)
+        return;
+
+
+    let bestMove=null;
+
+    let bestScore=
+        -Infinity;
+
+
+    if(
+        currentLevel<=2
+    ){
+
+        const captures=
+            moves.filter(
+                m=>
+                    board[
+                        m.to.r
+                    ][
+                        m.to.c
+                    ]
+            );
+
+
+        if(
+            captures.length &&
+            Math.random()<.45
+        ){
+
+            bestMove=
+                captures[
+                    Math.floor(
+                        Math.random()*
+                        captures.length
+                    )
+                ];
+
+        }
+        else{
+
+            bestMove=
+                moves[
+                    Math.floor(
+                        Math.random()*
+                        moves.length
+                    )
+                ];
+
+        }
+
+    }
+    else{
+
+        for(
+            const move of moves
+        ){
+
+            const savedBoard=
+                cloneBoard(
+                    board
+                );
+
+
+            const savedRights={
+                ...castleRights
+            };
+
+
+            const savedEP=
+                enPassant;
+
+
+            applyMoveToBoard(
+                board,
+                move
+            );
+
+
+            const score=
+                minimax(
+                    depth-1,
+                    -Infinity,
+                    Infinity,
+                    false
+                );
+
+
+            board=savedBoard;
+
+            castleRights=
+                savedRights;
+
+            enPassant=
+                savedEP;
+
+
+            if(
+                score>bestScore
+            ){
+
+                bestScore=score;
+
+                bestMove=move;
+
+            }
+
+        }
+
+    }
+
+
+    if(bestMove){
+
+        executeMove(
+            bestMove
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MINIMAX
+========================================================= */
+
+function minimax(
+    depth,
+    alpha,
+    beta,
+    maximizing
+){
+
+    const color=
+        maximizing
+        ?turn
+        :(turn==="w"?"b":"w");
+
+
+    const moves=
+        getAllLegalMoves(
+            color
+        );
+
+
+    if(
+        depth===0 ||
+        moves.length===0
+    ){
+
+        if(
+            moves.length===0
+        ){
+
+            if(
+                isInCheck(
+                    color
+                )
+            ){
+
+                return color===turn
+                    ?-999999
+                    :999999;
+
+            }
+
+
+            return 0;
+
+        }
+
+
+        return evaluateBoard();
+
+    }
+
+
+    if(maximizing){
+
+        let maxEval=
+            -Infinity;
+
+
+        for(
+            const move of moves
+        ){
+
+            const savedBoard=
+                cloneBoard(
+                    board
+                );
+
+
+            const savedRights={
+                ...castleRights
+            };
+
+
+            const savedEP=
+                enPassant;
+
+
+            applyMoveToBoard(
+                board,
+                move
+            );
+
+
+            const evaluation=
+                minimax(
+                    depth-1,
+                    alpha,
+                    beta,
+                    false
+                );
+
+
+            board=savedBoard;
+
+            castleRights=
+                savedRights;
+
+            enPassant=
+                savedEP;
+
+
+            maxEval=
+                Math.max(
+                    maxEval,
+                    evaluation
+                );
+
+
+            alpha=
+                Math.max(
+                    alpha,
+                    evaluation
+                );
+
+
+            if(
+                beta<=alpha
+            )
+                break;
+
+        }
+
+
+        return maxEval;
+
+    }
+
+
+    let minEval=
+        Infinity;
+
+
+    for(
+        const move of moves
+    ){
+
+        const savedBoard=
+            cloneBoard(
+                board
+            );
+
+
+        const savedRights={
+            ...castleRights
+        };
+
+
+        const savedEP=
+            enPassant;
+
+
+        applyMoveToBoard(
+            board,
+            move
+        );
+
+
+        const evaluation=
+            minimax(
+                depth-1,
+                alpha,
+                beta,
+                true
+            );
+
+
+        board=savedBoard;
+
+        castleRights=
+            savedRights;
+
+        enPassant=
+            savedEP;
+
+
+        minEval=
+            Math.min(
+                minEval,
+                evaluation
+            );
+
+
+        beta=
+            Math.min(
+                beta,
+                evaluation
+            );
+
+
+        if(
+            beta<=alpha
+        )
+            break;
+
+    }
+
+
+    return minEval;
+
+}
+
+
+/* =========================================================
+   EVALUACIÓN
+========================================================= */
+
+function evaluateBoard(){
+
+    let score=0;
+
+
+    for(
+        let r=0;
+        r<8;
+        r++
+    ){
+
+        for(
+            let c=0;
+            c<8;
+            c++
+        ){
+
+            const piece=
+                board[r][c];
+
+
+            if(!piece)
+                continue;
+
+
+            let value=
+                values[
+                    piece.type
+                ];
+
+
+            if(
+                piece.type==="P"
+            ){
+
+                const advance=
+                    piece.color==="b"
+                    ?r
+                    :7-r;
+
+
+                value+=
+                    advance*5;
+
+            }
+
+
+            if(
+                (
+                    r===3 ||
+                    r===4
+                ) &&
+                (
+                    c===3 ||
+                    c===4
+                )
+            ){
+
+                value+=15;
+
+            }
+
+
+            if(
+                piece.color===turn
+            ){
+
+                score+=value;
+
+            }
+            else{
+
+                score-=value;
+
+            }
+
+        }
+
+    }
+
+
+    return score;
+
+}
+
+
+/* =========================================================
+   PROMOCIÓN
+========================================================= */
+
+document
+.querySelectorAll(
+    ".promotion-buttons button"
+)
+.forEach(
+    button=>{
+
+        button.addEventListener(
+            "click",
+            ()=>{
+
+                if(
+                    !pendingPromotion
+                )
+                    return;
+
+
+                pendingPromotion.promotion=
+                    button.dataset.piece;
+
+
+                promotionOverlay.style.display=
+                    "none";
+
+
+                executeMove(
+                    pendingPromotion
+                );
+
+
+                pendingPromotion=null;
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   NUEVA PARTIDA
+========================================================= */
+
+function newGame(){
+
+    createInitialBoard();
+
+
+    turn="w";
+
+    selected=null;
+
+    legalMoves=[];
+
+    history=[];
+
+    captured=[];
+
+    enPassant=null;
+
+    lastMove=null;
+
+    gameOver=false;
+
+    pendingPromotion=null;
+
+    drawOffered=false;
+
+
+    castleRights={
+
+        wK:true,
+        wQ:true,
+        bK:true,
+        bQ:true
+
+    };
+
+
+    whiteTime=
+        startingTime;
+
+    blackTime=
+        startingTime;
+
+
+    resultOverlay.style.display=
+        "none";
+
+
+    promotionOverlay.style.display=
+        "none";
+
+
+    updatePlayerUI();
+
+    updatePlayerLayout();
+
+    renderBoard();
+
+    renderHistory();
+
+    renderCaptured();
+
+    updateClocks();
+
+    startClock();
+
+    checkGameState();
+
+
+    /*
+       Si el usuario eligió negras,
+       MATCHESS mueve primero.
+    */
+
+    if(
+        mode==="bot" &&
+        playerColor==="b"
+    ){
+
+        setTimeout(
+            computerMove,
+            500
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ORDEN VISUAL
+========================================================= */
+
+function updatePlayerLayout(){
+
+    if(
+        mode==="local"
+    ){
+
+        gameAreaOrderNormal();
+
+        return;
+
+    }
+
+
+    /*
+       Contra MATCHESS:
+       el jugador siempre queda abajo.
+    */
+
+    if(
+        playerColor==="w"
+    ){
+
+        if(
+            blackBar.parentNode
+        ){
+
+            gameArea.insertBefore(
+                blackBar,
+                boardElement.parentNode
+            );
+
+            gameArea.appendChild(
+                whiteBar
+            );
+
+        }
+
+    }
+    else{
+
+        if(
+            whiteBar.parentNode
+        ){
+
+            gameArea.insertBefore(
+                whiteBar,
+                boardElement.parentNode
+            );
+
+            gameArea.appendChild(
+                blackBar
+            );
+
+        }
+
+    }
+
+}
+
+
+function gameAreaOrderNormal(){
+
+    gameArea.appendChild(
+        blackBar
+    );
+
+    gameArea.appendChild(
+        document.querySelector(
+            ".board-container"
+        )
+    );
+
+    gameArea.appendChild(
+        whiteBar
+    );
+
+}
+
+
+/* =========================================================
+   UI JUGADORES
+========================================================= */
+
+function updatePlayerUI(){
+
+    if(
+        mode==="local"
+    ){
+
+        gameState.textContent=
+            "Dos jugadores locales";
+
+        blackName.textContent=
+            "Jugador 2";
+
+        blackRating.textContent=
+            "Negras";
+
+        blackAvatar.textContent=
+            "♚";
+
+        whiteName.textContent=
+            username;
+
+        whiteRating.textContent=
+            "Blancas · Jugador";
+
+        whiteAvatar.textContent=
+            "♔";
+
+    }
+    else{
+
+        gameState.textContent=
+            `Historia · Nivel ${currentLevel}`;
+
+
+        if(
+            playerColor==="w"
+        ){
+
+            blackName.textContent=
+                "MATCHESS";
+
+            blackRating.textContent=
+                `Nivel ${currentLevel}`;
+
+            blackAvatar.textContent=
+                "🤖";
+
+            whiteName.textContent=
+                username;
+
+            whiteRating.textContent=
+                "Blancas · Jugador";
+
+            whiteAvatar.textContent=
+                "♔";
+
+        }
+        else{
+
+            blackName.textContent=
+                username;
+
+            blackRating.textContent=
+                "Negras · Jugador";
+
+            blackAvatar.textContent=
+                "♚";
+
+            whiteName.textContent=
+                "MATCHESS";
+
+            whiteRating.textContent=
+                `Nivel ${currentLevel}`;
+
+            whiteAvatar.textContent=
+                "🤖";
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   RELOJ
+========================================================= */
+
+function startClock(){
+
+    stopClock();
+
+
+    clockInterval=
+        setInterval(
+            ()=>{
+
+                if(gameOver)
+                    return;
+
+
+                if(
+                    turn==="w"
+                ){
+
+                    whiteTime--;
+
+
+                    if(
+                        whiteTime<=0
+                    ){
+
+                        whiteTime=0;
+
+                        timeOut("w");
+
+                    }
+
+                }
+                else{
+
+                    blackTime--;
+
+
+                    if(
+                        blackTime<=0
+                    ){
+
+                        blackTime=0;
+
+                        timeOut("b");
+
+                    }
+
+                }
+
+
+                updateClocks();
+
+            },
+            1000
+        );
+
+}
+
+
+function stopClock(){
+
+    if(clockInterval){
+
+        clearInterval(
+            clockInterval
+        );
+
+        clockInterval=null;
+
+    }
+
+}
+
+
+function updateClocks(){
+
+    whiteClock.textContent=
+        formatTime(
+            whiteTime
+        );
+
+    blackClock.textContent=
+        formatTime(
+            blackTime
+        );
+
+
+    whiteClock.classList.toggle(
+        "active",
+        turn==="w" &&
+        !gameOver
+    );
+
+
+    blackClock.classList.toggle(
+        "active",
+        turn==="b" &&
+        !gameOver
+    );
+
+}
+
+
+function formatTime(seconds){
+
+    const minutes=
+        Math.floor(
+            seconds/60
+        );
+
+
+    const secs=
+        seconds%60;
+
+
+    return String(minutes)
+        .padStart(2,"0")
+        +
+        ":"+
+        String(secs)
+        .padStart(2,"0");
+
+}
+
+
+function timeOut(color){
+
+    gameOver=true;
+
+    stopClock();
+
+
+    const winner=
+        color==="w"
+        ?"b"
+        :"w";
+
+
+    if(
+        mode==="bot" &&
+        winner===playerColor
+    ){
+
+        unlockCurrentLevel();
+
+
+        showResult(
+            "🏆",
+            "¡Victoria!",
+            "Has ganado por tiempo."
+        );
+
+    }
+    else{
+
+        showResult(
+            "⏱️",
+            "Tiempo agotado",
+            winner==="w"
+            ?"Las blancas ganan por tiempo."
+            :"Las negras ganan por tiempo."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDIRSE
+========================================================= */
+
+resignBtn.addEventListener(
+    "click",
+    ()=>{
+
+        if(gameOver)
+            return;
+
+
+        const confirmed=
+            confirm(
+                "¿Seguro que quieres rendirte?"
+            );
+
+
+        if(!confirmed)
+            return;
+
+
+        gameOver=true;
+
+        stopClock();
+
+
+        const winner=
+            turn==="w"
+            ?"b"
+            :"w";
+
+
+        if(
+            mode==="bot" &&
+            winner===playerColor
+        ){
+
+            showResult(
+                "🏆",
+                "Partida terminada",
+                "MATCHESS gana por abandono."
+            );
+
+        }
+        else{
+
+            showResult(
+                "🏳️",
+                "Rendición",
+                winner==="w"
+                ?"Las blancas ganan."
+                :"Las negras ganan."
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   TABLAS
+========================================================= */
+
+offerDrawBtn.addEventListener(
+    "click",
+    ()=>{
+
+        if(gameOver)
+            return;
+
+
+        if(
+            mode==="local"
+        ){
+
+            const accepted=
+                confirm(
+                    "¿El otro jugador acepta las tablas?"
+                );
+
+
+            if(accepted){
+
+                gameOver=true;
+
+                stopClock();
+
+
+                showResult(
+                    "½",
+                    "Tablas",
+                    "Los jugadores acordaron tablas."
+                );
+
+            }
+
+        }
+        else{
+
+            const accepted=
+                Math.random()<.25;
+
+
+            if(accepted){
+
+                gameOver=true;
+
+                stopClock();
+
+
+                showResult(
+                    "½",
+                    "Tablas",
+                    "MATCHESS aceptó las tablas."
+                );
+
+            }
+            else{
+
+                statusElement.textContent=
+                    "MATCHESS rechazó las tablas.";
+
+                setTimeout(
+                    checkGameState,
+                    1400
+                );
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   MENÚ
+========================================================= */
+
+/*
+   IMPORTANTE:
+   Volver al menú NO vuelve a pedir nombre.
+   El nombre queda bloqueado durante la sesión.
+*/
+
+backMenuBtn.addEventListener(
+    "click",
+    ()=>{
+
+        stopClock();
+
+        resultOverlay.style.display=
+            "none";
+
+        promotionOverlay.style.display=
+            "none";
+
+        startScreen.style.display=
+            "flex";
+
+        menuUsername.textContent=
+            username;
+
+    }
+);
+
+
+resultMenu.addEventListener(
+    "click",
+    ()=>{
+
+        stopClock();
+
+        resultOverlay.style.display=
+            "none";
+
+        startScreen.style.display=
+            "flex";
+
+        menuUsername.textContent=
+            username;
+
+    }
+);
+
+
+/* =========================================================
+   NUEVA PARTIDA
+========================================================= */
+
+newGameBtn.addEventListener(
+    "click",
+    ()=>{
+
+        newGame();
+
+    }
+);
+
+
+resultAgain.addEventListener(
+    "click",
+    ()=>{
+
+        newGame();
+
+    }
+);
+
+
+/* =========================================================
+   RESULTADO
+========================================================= */
+
+function showResult(
+    icon,
+    title,
+    text
+){
+
+    resultIcon.textContent=
+        icon;
+
+    resultTitle.textContent=
+        title;
+
+    resultText.textContent=
+        text;
+
+
+    setTimeout(
+        ()=>{
+
+            resultOverlay.style.display=
+                "flex";
+
+        },
+        250
+    );
+
+}
+
+
+/* =========================================================
+   HISTORIA
+========================================================= */
+
+function getUnlockedLevel(){
+
+    return Number(
+        localStorage.getItem(
+            "matchess_unlocked"
+        ) || 1
+    );
+
+}
+
+
+function unlockCurrentLevel(){
+
+    const unlocked=
+        getUnlockedLevel();
+
+
+    if(
+        currentLevel>=unlocked
+    ){
+
+        const next=
+            Math.min(
+                10,
+                currentLevel+1
+            );
+
+
+        localStorage.setItem(
+            "matchess_unlocked",
+            next
+        );
+
+
+        renderLevels();
+
+    }
+
+}
+
+
+function renderLevels(){
+
+    const unlocked=
+        getUnlockedLevel();
+
+
+    levelGrid.innerHTML="";
+
+
+    for(
+        let i=1;
+        i<=10;
+        i++
+    ){
+
+        const level=
+            document.createElement(
+                "div"
+            );
+
+
+        const available=
+            i<=unlocked;
+
+
+        level.className=
+            "level "+
+            (
+                available
+                ?"unlocked"
+                :"locked"
+            )+
+            (
+                i===currentLevel
+                ?" current"
+                :""
+            );
+
+
+        level.innerHTML=`
+
+            <div>
+                ${i}
+            </div>
+
+            <div class="level-medal">
+                ${
+                    i<unlocked
+                    ?"🏅"
+                    :
+                    i===unlocked
+                    ?"⭐"
+                    :
+                    "🔒"
+                }
+            </div>
+
+        `;
+
+
+        if(available){
+
+            level.addEventListener(
+                "click",
+                ()=>{
+
+                    currentLevel=i;
+
+                    startLevel.value=i;
+
+                    newGame();
+
+                    renderLevels();
+
+                }
+            );
+
+        }
+
+
+        levelGrid.appendChild(
+            level
+        );
+
+    }
+
+
+    const percentage=
+        Math.max(
+            10,
+            unlocked*10
+        );
+
+
+    progressBar.style.width=
+        percentage+"%";
+
+
+    storyText.textContent=
+        unlocked>=10
+        ?
+        "Historia completada · Todos los rivales desbloqueados."
+        :
+        `Nivel ${unlocked} desbloqueado · ${
+            10-unlocked
+        } rivales restantes.`;
+
+}
+
+
+/* =========================================================
+   REFERENCIA GAME AREA
+========================================================= */
+
+const gameArea =
+    document.querySelector(
+        ".game-area"
+    );
+
+
+/* =========================================================
+   INICIALIZACIÓN
+========================================================= */
+
+renderLevels();
+
+createInitialBoard();
+
+renderBoard();
+
+</script>
+
+</body>
+</html>
