@@ -734,6 +734,10 @@ select{
 
 .board{
 
+    --board-light:#e8d0a9;
+    --board-dark:#a97852;
+    --board-last:#c7b15a;
+
     width:
         min(
             620px,
@@ -795,13 +799,11 @@ select{
 }
 
 .light{
-
-    background:#e8d0a9;
+    background:var(--board-light,#e8d0a9);
 }
 
 .dark{
-
-    background:#a97852;
+    background:var(--board-dark,#a97852);
 }
 
 
@@ -809,69 +811,239 @@ select{
    PIEZAS
 ========================================================= */
 
+/* Base visual de las piezas. Esta regla es imprescindible porque
+   renderBoard() inserta cada pieza como un <span class="piece"> con un SVG. */
 .piece{
-
-    width:83%;
-    height:83%;
-
+    width:90%;
+    height:90%;
     display:flex;
-
     align-items:center;
     justify-content:center;
-
-    font-family:
-        "DejaVu Sans",
-        "Segoe UI Symbol",
-        serif;
-
-    font-size:
-        clamp(
-            27px,
-            5.8vw,
-            58px
-        );
-
     line-height:1;
-
     pointer-events:none;
-
     z-index:4;
+    transform-origin:center;
+    transition:transform .1s ease, filter .15s ease;
+}
 
-    transform:translateZ(0);
+.piece svg{
+    width:100%;
+    height:100%;
+    display:block;
+    overflow:visible;
+}
 
-    transition:
-        transform .1s ease;
+.piece-face{
+    font-family:"DejaVu Sans","Segoe UI Symbol","Noto Sans Symbols 2","Arial Unicode MS",serif;
+    font-size:76px;
+    font-weight:700;
+    text-anchor:middle;
+    dominant-baseline:middle;
+    paint-order:stroke fill;
+    stroke-width:1.3px;
+    fill:var(--pieceGradient);
+    filter:var(--pieceShadow);
+}
+
+.white-piece .piece-face{
+    stroke:#3c3c3c;
+}
+
+.black-piece .piece-face{
+    stroke:#050607;
 }
 
 .square:hover .piece{
-
     transform:scale(1.035);
 }
 
-.white-piece{
-
-    color:#fff;
-
-    text-shadow:
-        0 1px 0 #333,
-        1px 0 0 #333,
-        -1px 0 0 #333,
-        0 -1px 0 #333,
-        0 4px 5px
-        rgba(0,0,0,.35);
+/* Los tres estilos disponibles usan el mismo espacio visual: las piezas
+   ocupan aproximadamente el 90% de cada casilla, evitando que se vean
+   pequeñas y sin llegar a tocar los bordes. */
+.board.piece-elegant .piece{
+    transform:scale(1.02);
+    filter:drop-shadow(0 2px 2px rgba(0,0,0,.25));
+}
+.board.piece-elegant .piece-face{
+    font-family:Georgia,"Times New Roman","DejaVu Sans","Segoe UI Symbol",serif;
+    font-weight:700;
 }
 
-.black-piece{
-
-    color:#222;
-
-    text-shadow:
-        0 2px 3px
-        rgba(255,255,255,.16),
-        0 4px 6px
-        rgba(0,0,0,.45);
+.board.piece-minimal .piece{
+    transform:scale(1.00);
+    filter:drop-shadow(0 2px 2px rgba(0,0,0,.18));
+}
+.board.piece-minimal .piece-face{
+    font-family:"Segoe UI Symbol","DejaVu Sans","Noto Sans Symbols 2",sans-serif;
+    font-weight:400;
+    stroke-width:.8px;
 }
 
+.board.piece-bold .piece{
+    transform:scale(1.03);
+    filter:drop-shadow(0 2px 2px rgba(0,0,0,.30));
+}
+.board.piece-bold .piece-face{
+    font-family:"Arial Unicode MS","Segoe UI Symbol","DejaVu Sans",sans-serif;
+    font-weight:900;
+    stroke-width:1.8px;
+}
+
+/* =========================================================
+   TEMAS DEL TABLERO
+========================================================= */
+
+.board.theme-classic{
+    --board-light:#e8d0a9;
+    --board-dark:#a97852;
+    --board-last:#c7b15a;
+}
+
+.board.theme-green{
+    --board-light:#eeeed2;
+    --board-dark:#769656;
+    --board-last:#baca44;
+}
+
+.board.theme-blue{
+    --board-light:#d9e8f5;
+    --board-dark:#4f78a5;
+    --board-last:#78a6c8;
+}
+
+.board.theme-red{
+    --board-light:#f0d5d2;
+    --board-dark:#a94b4b;
+    --board-last:#d17a55;
+}
+
+.board.theme-purple{
+    --board-light:#eadff2;
+    --board-dark:#76558d;
+    --board-last:#ad7bc4;
+}
+
+.board.theme-orange{
+    --board-light:#f4dfbd;
+    --board-dark:#b86f32;
+    --board-last:#d99b4d;
+}
+
+/* =========================================================
+   ESTILOS DE PIEZAS
+========================================================= */
+
+.board.piece-classic .piece{
+    font-family:"DejaVu Sans","Segoe UI Symbol",serif;
+    font-weight:400;
+}
+
+.board.piece-modern .piece{
+    font-family:"Segoe UI Symbol","Noto Sans Symbols 2",sans-serif;
+    font-weight:600;
+    transform:scale(.96);
+}
+
+.board.piece-elegant .piece{
+    font-family:Georgia,"Times New Roman",serif;
+    font-weight:700;
+    text-shadow:0 2px 1px rgba(0,0,0,.32),0 5px 7px rgba(0,0,0,.28);
+}
+
+.board.piece-minimal .piece{
+    font-family:"Segoe UI Symbol","Arial Unicode MS",sans-serif;
+    font-weight:400;
+    text-shadow:none;
+    filter:drop-shadow(0 2px 2px rgba(0,0,0,.2));
+}
+
+.board.piece-bold .piece{
+    font-family:"Arial Unicode MS","Segoe UI Symbol",sans-serif;
+    font-weight:900;
+    transform:scale(1.04);
+    text-shadow:0 3px 4px rgba(0,0,0,.42);
+}
+
+.style-choice{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+    margin-top:9px;
+}
+
+.style-button{
+    padding:9px 5px;
+    border-radius:9px;
+    background:#10171e;
+    border:1px solid rgba(255,255,255,.05);
+    color:#dfe7ed;
+    cursor:pointer;
+    text-align:center;
+    font-weight:800;
+    font-size:10px;
+    transition:.13s;
+}
+
+.style-button:hover{
+    background:#192731;
+}
+
+.style-button.active{
+    border-color:#4cc9f0;
+    background:#20384a;
+    box-shadow:0 0 0 1px rgba(76,201,240,.1);
+}
+
+.style-symbol{
+    display:block;
+    font-size:27px;
+    line-height:1;
+    margin-bottom:4px;
+}
+
+.theme-choice{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+    margin-top:9px;
+}
+
+.theme-button{
+    padding:8px 5px;
+    border-radius:9px;
+    background:#10171e;
+    border:1px solid rgba(255,255,255,.05);
+    color:#dfe7ed;
+    cursor:pointer;
+    text-align:center;
+    font-weight:800;
+    font-size:10px;
+}
+
+.theme-button.active{
+    border-color:#4cc9f0;
+    background:#20384a;
+}
+
+.theme-preview{
+    width:32px;
+    height:22px;
+    margin:0 auto 4px;
+    border-radius:5px;
+    border:1px solid rgba(255,255,255,.15);
+    background:linear-gradient(45deg,var(--t-dark) 50%,var(--t-light) 50%);
+}
+
+.theme-classic{--t-light:#e8d0a9;--t-dark:#a97852;}
+.theme-green{--t-light:#eeeed2;--t-dark:#769656;}
+.theme-blue{--t-light:#d9e8f5;--t-dark:#4f78a5;}
+.theme-red{--t-light:#f0d5d2;--t-dark:#a94b4b;}
+.theme-purple{--t-light:#eadff2;--t-dark:#76558d;}
+.theme-orange{--t-light:#f4dfbd;--t-dark:#b86f32;}
+
+@media(max-width:600px){
+    .style-choice{grid-template-columns:repeat(3,1fr);}
+}
 
 /* =========================================================
    MOVIMIENTOS
@@ -885,8 +1057,7 @@ select{
 }
 
 .square.last-move{
-
-    background:#c7b15a;
+    background:var(--board-last,#c7b15a);
 }
 
 .square.move::after{
@@ -2040,6 +2211,64 @@ button:active{
         </div>
 
 
+        <!-- PERSONALIZACIÓN -->
+
+        <div
+            class="start-option"
+            style="margin-top:13px;"
+        >
+
+            <div class="option-title">
+                🎨 Personalización
+            </div>
+
+            <div class="option-description">
+                Cambia el estilo de las piezas y el color del tablero.
+            </div>
+
+            <div class="option-title" style="font-size:11px;margin-top:11px;">
+                ♟ Estilo de piezas
+            </div>
+
+            <div class="style-choice">
+                <div class="style-button active" data-style="elegant">
+                    <span class="style-symbol">♞</span>Elegante
+                </div>
+                <div class="style-button" data-style="minimal">
+                    <span class="style-symbol">♞</span>Minimal
+                </div>
+                <div class="style-button" data-style="bold">
+                    <span class="style-symbol">♞</span>Bold
+                </div>
+            </div>
+
+            <div class="option-title" style="font-size:11px;margin-top:12px;">
+                🟫 Color del tablero
+            </div>
+
+            <div class="theme-choice">
+                <div class="theme-button theme-classic active" data-theme="classic">
+                    <span class="theme-preview"></span>Clásico
+                </div>
+                <div class="theme-button theme-green" data-theme="green">
+                    <span class="theme-preview"></span>Verde
+                </div>
+                <div class="theme-button theme-blue" data-theme="blue">
+                    <span class="theme-preview"></span>Azul
+                </div>
+                <div class="theme-button theme-red" data-theme="red">
+                    <span class="theme-preview"></span>Rojo
+                </div>
+                <div class="theme-button theme-purple" data-theme="purple">
+                    <span class="theme-preview"></span>Morado
+                </div>
+                <div class="theme-button theme-orange" data-theme="orange">
+                    <span class="theme-preview"></span>Naranja
+                </div>
+            </div>
+
+        </div>
+
         <button
             id="startPlay"
             class="start-play"
@@ -2638,6 +2867,13 @@ let currentLevel=1;
 
 let startingTime=600;
 
+/* Personalización persistente */
+let pieceStyle=localStorage.getItem("matchess_piece_style") || "elegant";
+if(!["elegant","minimal","bold"].includes(pieceStyle)){
+    pieceStyle="elegant";
+}
+let boardTheme=localStorage.getItem("matchess_board_theme") || "classic";
+
 /*
     IMPORTANTE:
     El nombre NO se guarda en localStorage.
@@ -2695,31 +2931,40 @@ let castleRights={
 
 
 /* =========================================================
-   SÍMBOLOS
+   PIEZAS SVG / ESTILOS VISUALES
 ========================================================= */
 
-const symbols={
+function pieceSVG(type,color){
+    const glyph={
+        K:"♔",Q:"♕",R:"♖",B:"♗",N:"♘",P:"♙"
+    }[type];
 
-    w:{
-        K:"♔",
-        Q:"♕",
-        R:"♖",
-        B:"♗",
-        N:"♘",
-        P:"♙"
-    },
+    const blackGlyph={
+        K:"♚",Q:"♛",R:"♜",B:"♝",N:"♞",P:"♟"
+    }[type];
 
-    b:{
-        K:"♚",
-        Q:"♛",
-        R:"♜",
-        B:"♝",
-        N:"♞",
-        P:"♟"
-    }
+    const symbol=color==="w" ? glyph : blackGlyph;
+    const uid="p"+Math.random().toString(36).slice(2,9);
 
-};
-
+    return `
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+                <linearGradient id="pieceGradient-${uid}" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="${color==="w"?"#ffffff":"#555b63"}"/>
+                    <stop offset="48%" stop-color="${color==="w"?"#eee7d6":"#24282e"}"/>
+                    <stop offset="100%" stop-color="${color==="w"?"#b8ad99":"#080a0d"}"/>
+                </linearGradient>
+                <filter id="pieceShadow-${uid}" x="-30%" y="-30%" width="160%" height="170%">
+                    <feDropShadow dx="0" dy="4" stdDeviation="2.8" flood-opacity=".38"/>
+                </filter>
+                <filter id="pieceBoldShadow-${uid}" x="-30%" y="-30%" width="160%" height="170%">
+                    <feDropShadow dx="0" dy="3" stdDeviation="1.8" flood-opacity=".45"/>
+                </filter>
+            </defs>
+            <text class="piece-face" x="50" y="52"
+                style="--pieceGradient:url(#pieceGradient-${uid});--pieceShadow:url(#pieceShadow-${uid});--pieceBoldShadow:url(#pieceBoldShadow-${uid})">${symbol}</text>
+        </svg>`;
+}
 
 /* =========================================================
    VALORES
@@ -2736,6 +2981,48 @@ const values={
 
 };
 
+
+/* =========================================================
+   PERSONALIZACIÓN
+========================================================= */
+
+function applyCustomization(){
+
+    boardElement.classList.remove(
+        "theme-classic","theme-green","theme-blue",
+        "theme-red","theme-purple","theme-orange",
+        "piece-elegant","piece-minimal","piece-bold"
+    );
+
+    boardElement.classList.add("theme-"+boardTheme);
+    boardElement.classList.add("piece-"+pieceStyle);
+
+    document.querySelectorAll(".style-button").forEach(button=>{
+        button.classList.toggle("active",button.dataset.style===pieceStyle);
+    });
+
+    document.querySelectorAll(".theme-button").forEach(button=>{
+        button.classList.toggle("active",button.dataset.theme===boardTheme);
+    });
+}
+
+document.querySelectorAll(".style-button").forEach(button=>{
+    button.addEventListener("click",()=>{
+        pieceStyle=button.dataset.style;
+        localStorage.setItem("matchess_piece_style",pieceStyle);
+        applyCustomization();
+        renderBoard();
+    });
+});
+
+document.querySelectorAll(".theme-button").forEach(button=>{
+    button.addEventListener("click",()=>{
+        boardTheme=button.dataset.theme;
+        localStorage.setItem("matchess_board_theme",boardTheme);
+        applyCustomization();
+        renderBoard();
+    });
+});
 
 /* =========================================================
    PRIMERA VENTANA: NOMBRE
@@ -3017,13 +3304,12 @@ startPlay.addEventListener(
 
         if(
             mode==="bot" &&
-            currentLevel>
-            getUnlockedLevel()
+            currentLevel>getUnlockedLevel()
         ){
-
-            currentLevel=
-                getUnlockedLevel();
-
+            // Seguridad: un nivel bloqueado nunca puede iniciar una partida.
+            currentLevel=getUnlockedLevel();
+            updateLevelSelect();
+            return;
         }
 
 
@@ -3269,12 +3555,10 @@ function renderBoard(){
                         :"black-piece"
                     );
 
-                element.textContent=
-                    symbols[
-                        piece.color
-                    ][
-                        piece.type
-                    ];
+                element.innerHTML=pieceSVG(
+                    piece.type,
+                    piece.color
+                );
 
                 square.appendChild(
                     element
@@ -6539,152 +6823,100 @@ function showResult(
 
 function getUnlockedLevel(){
 
-    return Number(
-        localStorage.getItem(
-            "matchess_unlocked"
-        ) || 1
+    const stored=Number(
+        localStorage.getItem("matchess_unlocked") || 1
     );
 
+    return Math.min(10,Math.max(1,stored));
+}
+
+
+function updateLevelSelect(){
+
+    const unlocked=getUnlockedLevel();
+
+    Array.from(startLevel.options).forEach(option=>{
+        const level=Number(option.value);
+        option.disabled=level>unlocked;
+        option.textContent=option.textContent.replace(/^🔒\s*/,"");
+        if(level>unlocked){
+            option.textContent="🔒 "+option.textContent;
+        }
+    });
+
+    if(Number(startLevel.value)>unlocked){
+        startLevel.value=String(unlocked);
+    }
 }
 
 
 function unlockCurrentLevel(){
 
-    const unlocked=
-        getUnlockedLevel();
+    const unlocked=getUnlockedLevel();
 
+    if(currentLevel>=unlocked){
 
-    if(
-        currentLevel>=unlocked
-    ){
-
-        const next=
-            Math.min(
-                10,
-                currentLevel+1
-            );
-
+        const next=Math.min(10,currentLevel+1);
 
         localStorage.setItem(
             "matchess_unlocked",
-            next
+            String(next)
         );
 
-
+        updateLevelSelect();
         renderLevels();
-
     }
-
 }
 
 
 function renderLevels(){
 
-    const unlocked=
-        getUnlockedLevel();
-
+    const unlocked=getUnlockedLevel();
 
     levelGrid.innerHTML="";
 
+    for(let i=1;i<=10;i++){
 
-    for(
-        let i=1;
-        i<=10;
-        i++
-    ){
-
-        const level=
-            document.createElement(
-                "div"
-            );
-
-
-        const available=
-            i<=unlocked;
-
+        const level=document.createElement("div");
+        const available=i<=unlocked;
 
         level.className=
             "level "+
-            (
-                available
-                ?"unlocked"
-                :"locked"
-            )+
-            (
-                i===currentLevel
-                ?" current"
-                :""
-            );
+            (available?"unlocked":"locked")+
+            (i===currentLevel?" current":"");
 
+        level.setAttribute("aria-disabled",available?"false":"true");
 
         level.innerHTML=`
-
-            <div>
-                ${i}
-            </div>
-
+            <div>${i}</div>
             <div class="level-medal">
-                ${
-                    i<unlocked
-                    ?"🏅"
-                    :
-                    i===unlocked
-                    ?"⭐"
-                    :
-                    "🔒"
-                }
+                ${i<unlocked?"🏅":i===unlocked?"⭐":"🔒"}
             </div>
-
         `;
 
-
+        // Los niveles bloqueados NO tienen listener y además quedan
+        // protegidos por la comprobación del botón COMENZAR.
         if(available){
-
-            level.addEventListener(
-                "click",
-                ()=>{
-
-                    currentLevel=i;
-
-                    startLevel.value=i;
-
-                    newGame();
-
-                    renderLevels();
-
-                }
-            );
-
+            level.addEventListener("click",()=>{
+                currentLevel=i;
+                startLevel.value=String(i);
+                updateLevelSelect();
+                renderLevels();
+            });
         }
 
-
-        levelGrid.appendChild(
-            level
-        );
-
+        levelGrid.appendChild(level);
     }
 
-
-    const percentage=
-        Math.max(
-            10,
-            unlocked*10
-        );
-
-
-    progressBar.style.width=
-        percentage+"%";
-
+    const percentage=Math.max(10,unlocked*10);
+    progressBar.style.width=percentage+"%";
 
     storyText.textContent=
         unlocked>=10
-        ?
-        "Historia completada · Todos los rivales desbloqueados."
-        :
-        `Nivel ${unlocked} desbloqueado · ${
-            10-unlocked
-        } rivales restantes.`;
+        ?"Historia completada · Todos los rivales desbloqueados."
+        :`Nivel ${unlocked} desbloqueado · ${10-unlocked} rivales restantes.`;
 
+    updateLevelSelect();
 }
 
 
@@ -6702,6 +6934,8 @@ const gameArea =
    INICIALIZACIÓN
 ========================================================= */
 
+applyCustomization();
+updateLevelSelect();
 renderLevels();
 
 createInitialBoard();
