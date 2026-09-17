@@ -772,6 +772,13 @@ select{
    CASILLAS
 ========================================================= */
 
+:root{
+
+    /* Tema inicial: marrón */
+    --board-light:#e8d0a9;
+    --board-dark:#a97852;
+}
+
 .square{
 
     position:relative;
@@ -796,12 +803,187 @@ select{
 
 .light{
 
-    background:#e8d0a9;
+    background:var(--board-light);
 }
 
 .dark{
 
-    background:#a97852;
+    background:var(--board-dark);
+}
+
+
+/* =========================================================
+   TEMA DEL TABLERO
+========================================================= */
+
+.board-theme-options{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:7px;
+}
+
+.board-theme-button{
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:7px;
+
+    min-height:38px;
+
+    background:#111a22;
+
+    border:1px solid rgba(255,255,255,.06);
+}
+
+.board-theme-button.active{
+
+    background:#20384a;
+
+    border-color:#4cc9f0;
+
+    box-shadow:
+        0 0 0 1px
+        rgba(76,201,240,.12);
+}
+
+.board-theme-swatch{
+
+    width:17px;
+    height:17px;
+
+    flex:0 0 auto;
+
+    border-radius:4px;
+
+    border:1px solid rgba(255,255,255,.22);
+}
+
+.theme-brown{
+
+    background:linear-gradient(135deg,#e8d0a9 50%,#a97852 50%);
+}
+
+.theme-pink{
+
+    background:linear-gradient(135deg,#f4c2d2 50%,#c96b8d 50%);
+}
+
+.theme-green{
+
+    background:linear-gradient(135deg,#d7e7be 50%,#6f9456 50%);
+}
+
+.theme-red{
+
+    background:linear-gradient(135deg,#f1c0b7 50%,#b9514d 50%);
+}
+
+.option-divider{
+
+    height:1px;
+
+    margin:14px 0;
+
+    background:rgba(255,255,255,.08);
+}
+
+.piece-style-options{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:7px;
+}
+
+.piece-style-button{
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:7px;
+
+    min-height:42px;
+
+    background:#111a22;
+
+    border:1px solid rgba(255,255,255,.06);
+}
+
+.piece-style-button.active{
+
+    background:#20384a;
+
+    border-color:#4cc9f0;
+
+    box-shadow:
+        0 0 0 1px
+        rgba(76,201,240,.12);
+}
+
+.piece-style-preview{
+
+    width:22px;
+
+    font-family:
+        "Segoe UI Symbol",
+        "Arial Unicode MS",
+        "DejaVu Sans",
+        serif;
+
+    font-size:23px;
+
+    line-height:1;
+}
+
+.piece-style-preview.solid{
+
+    color:#fff0c2;
+
+    text-shadow:
+        1px 0 0 #6b5230,
+        -1px 0 0 #6b5230,
+        0 1px 0 #6b5230;
+}
+
+.piece-style-preview.outline{
+
+    color:#fff8e4;
+
+    text-shadow:
+        1px 0 0 #30343a,
+        -1px 0 0 #30343a,
+        0 1px 0 #30343a;
+}
+
+/* El estilo original usa las figuras de contorno blancas. */
+:root.piece-style-outline .white-piece{
+
+    color:#fff8e4;
+
+    text-shadow:
+        0 1px 0 #333,
+        1px 0 0 #333,
+        -1px 0 0 #333,
+        0 -1px 0 #333,
+        0 4px 5px rgba(0,0,0,.35);
+}
+
+:root.piece-style-outline .black-piece{
+
+    color:#222;
+
+    text-shadow:
+        0 2px 3px rgba(255,255,255,.16),
+        0 4px 6px rgba(0,0,0,.45);
 }
 
 
@@ -811,8 +993,8 @@ select{
 
 .piece{
 
-    width:83%;
-    height:83%;
+    width:88%;
+    height:88%;
 
     display:flex;
 
@@ -820,18 +1002,19 @@ select{
     justify-content:center;
 
     font-family:
-        "DejaVu Sans",
         "Segoe UI Symbol",
+        "Arial Unicode MS",
+        "DejaVu Sans",
         serif;
 
     font-size:
         clamp(
-            27px,
-            5.8vw,
-            58px
+            29px,
+            6.15vw,
+            62px
         );
 
-    line-height:1;
+    line-height:.9;
 
     pointer-events:none;
 
@@ -850,26 +1033,35 @@ select{
 
 .white-piece{
 
-    color:#fff;
+    /* Marfil cálido y relleno, en lugar del glifo hueco. */
+    color:#fff0c2;
 
     text-shadow:
-        0 1px 0 #333,
-        1px 0 0 #333,
-        -1px 0 0 #333,
-        0 -1px 0 #333,
-        0 4px 5px
-        rgba(0,0,0,.35);
+        0 1px 0 #fff9e1,
+        1px 0 0 #6b5230,
+        -1px 0 0 #6b5230,
+        0 -1px 0 #6b5230,
+        0 2px 0 #6b5230,
+        0 4px 5px rgba(0,0,0,.38);
 }
 
 .black-piece{
 
-    color:#222;
+    /* Grafito sólido, con una leve luz para dar volumen. */
+    color:#1c2228;
 
     text-shadow:
-        0 2px 3px
-        rgba(255,255,255,.16),
-        0 4px 6px
-        rgba(0,0,0,.45);
+        0 1px 0 #53606a,
+        0 3px 5px rgba(0,0,0,.58);
+}
+
+.captured-piece{
+
+    font-family:
+        "Segoe UI Symbol",
+        "Arial Unicode MS",
+        "DejaVu Sans",
+        serif;
 }
 
 
@@ -1543,6 +1735,15 @@ button:active{
     font-size:40px;
 
     padding:8px;
+
+    color:#fff0c2;
+
+    text-shadow:
+        0 1px 0 #fff9e1,
+        1px 0 0 #6b5230,
+        -1px 0 0 #6b5230,
+        0 -1px 0 #6b5230,
+        0 2px 0 #6b5230;
 }
 
 
@@ -2286,6 +2487,99 @@ button:active{
     <div class="card">
 
         <div class="card-title">
+            Color del tablero
+        </div>
+
+        <div
+            class="board-theme-options"
+            role="group"
+            aria-label="Color del tablero"
+        >
+
+            <button
+                type="button"
+                class="board-theme-button active"
+                data-board-theme="brown"
+                aria-pressed="true"
+            >
+                <span class="board-theme-swatch theme-brown"></span>
+                Marrón
+            </button>
+
+            <button
+                type="button"
+                class="board-theme-button"
+                data-board-theme="pink"
+                aria-pressed="false"
+            >
+                <span class="board-theme-swatch theme-pink"></span>
+                Rosa
+            </button>
+
+            <button
+                type="button"
+                class="board-theme-button"
+                data-board-theme="green"
+                aria-pressed="false"
+            >
+                <span class="board-theme-swatch theme-green"></span>
+                Verde
+            </button>
+
+            <button
+                type="button"
+                class="board-theme-button"
+                data-board-theme="red"
+                aria-pressed="false"
+            >
+                <span class="board-theme-swatch theme-red"></span>
+                Rojo
+            </button>
+
+        </div>
+
+
+        <div class="option-divider"></div>
+
+
+        <div class="card-title">
+            Estilo de piezas
+        </div>
+
+        <div
+            class="piece-style-options"
+            role="group"
+            aria-label="Estilo de piezas"
+        >
+
+            <button
+                type="button"
+                class="piece-style-button active"
+                data-piece-style="solid"
+                aria-pressed="true"
+            >
+                <span class="piece-style-preview solid">♛</span>
+                Sólidas
+            </button>
+
+            <button
+                type="button"
+                class="piece-style-button"
+                data-piece-style="outline"
+                aria-pressed="false"
+            >
+                <span class="piece-style-preview outline">♕</span>
+                Contorno
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
             Material capturado
         </div>
 
@@ -2386,19 +2680,19 @@ button:active{
         <div class="promotion-buttons">
 
             <button data-piece="Q">
-                ♕
+                ♛
             </button>
 
             <button data-piece="R">
-                ♖
+                ♜
             </button>
 
             <button data-piece="B">
-                ♗
+                ♝
             </button>
 
             <button data-piece="N">
-                ♘
+                ♞
             </button>
 
         </div>
@@ -2595,6 +2889,129 @@ const resultMenu =
         "resultMenu"
     );
 
+const boardThemeButtons =
+    document.querySelectorAll(
+        ".board-theme-button"
+    );
+
+const pieceStyleButtons =
+    document.querySelectorAll(
+        ".piece-style-button"
+    );
+
+const promotionPieceButtons =
+    document.querySelectorAll(
+        ".promotion-buttons button"
+    );
+
+
+/* =========================================================
+   TEMA DEL TABLERO
+========================================================= */
+
+const boardThemes={
+
+    brown:{
+        light:"#e8d0a9",
+        dark:"#a97852"
+    },
+
+    pink:{
+        light:"#f4c2d2",
+        dark:"#c96b8d"
+    },
+
+    green:{
+        light:"#d7e7be",
+        dark:"#6f9456"
+    },
+
+    red:{
+        light:"#f1c0b7",
+        dark:"#b9514d"
+    }
+};
+
+
+function setBoardTheme(themeName){
+
+    const theme=
+        boardThemes[themeName] ||
+        boardThemes.brown;
+
+
+    document.documentElement.style.setProperty(
+        "--board-light",
+        theme.light
+    );
+
+    document.documentElement.style.setProperty(
+        "--board-dark",
+        theme.dark
+    );
+
+
+    boardThemeButtons.forEach(
+        button=>{
+
+            const isActive=
+                button.dataset.boardTheme===themeName;
+
+
+            button.classList.toggle(
+                "active",
+                isActive
+            );
+
+            button.setAttribute(
+                "aria-pressed",
+                String(isActive)
+            );
+
+        }
+    );
+
+
+    localStorage.setItem(
+        "matchess_board_theme",
+        boardThemes[themeName]
+        ?themeName
+        :"brown"
+    );
+
+}
+
+
+boardThemeButtons.forEach(
+    button=>{
+
+        button.addEventListener(
+            "click",
+            ()=>{
+
+                setBoardTheme(
+                    button.dataset.boardTheme
+                );
+
+            }
+        );
+
+    }
+);
+
+
+const savedBoardTheme=
+    localStorage.getItem(
+        "matchess_board_theme"
+    );
+
+
+setBoardTheme(
+    boardThemes[savedBoardTheme]
+    ?savedBoardTheme
+    :"brown"
+);
+
 
 /* =========================================================
    NUEVO SISTEMA DE IDENTIDAD
@@ -2698,27 +3115,160 @@ let castleRights={
    SÍMBOLOS
 ========================================================= */
 
-const symbols={
+const pieceStyles={
 
-    w:{
-        K:"♔",
-        Q:"♕",
-        R:"♖",
-        B:"♗",
-        N:"♘",
-        P:"♙"
+    solid:{
+
+        w:{
+            K:"♚",
+            Q:"♛",
+            R:"♜",
+            B:"♝",
+            N:"♞",
+            P:"♟"
+        },
+
+        b:{
+            K:"♚",
+            Q:"♛",
+            R:"♜",
+            B:"♝",
+            N:"♞",
+            P:"♟"
+        }
     },
 
-    b:{
-        K:"♚",
-        Q:"♛",
-        R:"♜",
-        B:"♝",
-        N:"♞",
-        P:"♟"
+    outline:{
+
+        w:{
+            K:"♔",
+            Q:"♕",
+            R:"♖",
+            B:"♗",
+            N:"♘",
+            P:"♙"
+        },
+
+        b:{
+            K:"♚",
+            Q:"♛",
+            R:"♜",
+            B:"♝",
+            N:"♞",
+            P:"♟"
+        }
     }
 
 };
+
+
+let pieceStyle="solid";
+
+
+function getPieceSymbol(
+    color,
+    type
+){
+
+    return pieceStyles[pieceStyle][color][type];
+
+}
+
+
+function setPieceStyle(styleName){
+
+    pieceStyle=
+        pieceStyles[styleName]
+        ?styleName
+        :"solid";
+
+
+    document.documentElement.classList.toggle(
+        "piece-style-outline",
+        pieceStyle==="outline"
+    );
+
+
+    pieceStyleButtons.forEach(
+        button=>{
+
+            const isActive=
+                button.dataset.pieceStyle===pieceStyle;
+
+
+            button.classList.toggle(
+                "active",
+                isActive
+            );
+
+            button.setAttribute(
+                "aria-pressed",
+                String(isActive)
+            );
+
+        }
+    );
+
+
+    promotionPieceButtons.forEach(
+        button=>{
+
+            button.textContent=
+                getPieceSymbol(
+                    "w",
+                    button.dataset.piece
+                );
+
+        }
+    );
+
+
+    localStorage.setItem(
+        "matchess_piece_style",
+        pieceStyle
+    );
+
+
+    if(board.length){
+
+        renderBoard();
+
+        renderCaptured();
+
+    }
+
+}
+
+
+pieceStyleButtons.forEach(
+    button=>{
+
+        button.addEventListener(
+            "click",
+            ()=>{
+
+                setPieceStyle(
+                    button.dataset.pieceStyle
+                );
+
+            }
+        );
+
+    }
+);
+
+
+const savedPieceStyle=
+    localStorage.getItem(
+        "matchess_piece_style"
+    );
+
+
+setPieceStyle(
+    pieceStyles[savedPieceStyle]
+    ?savedPieceStyle
+    :"solid"
+);
 
 
 /* =========================================================
@@ -3270,11 +3820,10 @@ function renderBoard(){
                     );
 
                 element.textContent=
-                    symbols[
-                        piece.color
-                    ][
+                    getPieceSymbol(
+                        piece.color,
                         piece.type
-                    ];
+                    );
 
                 square.appendChild(
                     element
@@ -5139,13 +5688,20 @@ function renderCaptured(){
                     "span"
                 );
 
+            span.className=
+                "captured-piece "+
+                (
+                    piece.color==="w"
+                    ?"white-piece"
+                    :"black-piece"
+                );
+
 
             span.textContent=
-                symbols[
-                    piece.color
-                ][
+                getPieceSymbol(
+                    piece.color,
                     piece.type
-                ];
+                );
 
 
             capturedElement.appendChild(
