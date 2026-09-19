@@ -3096,6 +3096,8 @@ let clockInterval=null;
 
 let drawOffered=false;
 
+let plyCount=0;
+
 
 /* =========================================================
    ENROQUE
@@ -5317,6 +5319,9 @@ function executeMove(move){
         :"w";
 
 
+    plyCount++;
+
+
     renderBoard();
 
     renderCaptured();
@@ -5908,10 +5913,474 @@ function highlightCheck(){
 
 
 /* =========================================================
-   MOTOR MATCHESS
+   INTEGRACIÓN CON STOCKFISH
+   
+   Se comunica por el protocolo UCI a través de un
+   Web Worker. Si por algún motivo no se puede cargar
+   (archivo no encontrado, WebAssembly no soportado,
+   página abierta con file:// en vez de un servidor),
+   se usa automáticamente el motor local de respaldo
+   (localComputerMove) que ya traía el proyecto.
 ========================================================= */
 
-function computerMove(){
+let stockfish=null;
+
+let stockfishReady=false;
+
+let stockfishFailed=false;
+
+let stockfishThinking=false;
+
+
+/*
+   Relación Nivel (1-10) -> fuerza de Stockfish.
+   skill: 0-20 (Skill Level de Stockfish)
+   depth: profundidad máxima de búsqueda
+   movetime: tope de tiempo en ms por jugada
+*/
+
+const stockfishLevels={
+
+    1: { skill:0,  depth:1,  movetime:300  },
+    2: { skill:2,  depth:2,  movetime:400  },
+    3: { skill:4,  depth:3,  movetime:500  },
+    4: { skill:6,  depth:4,  movetime:700  },
+    5: { skill:8,  depth:6,  movetime:900  },
+    6: { skill:10, depth:8,  movetime:1200 },
+    7: { skill:13, depth:10, movetime:1500 },
+    8: { skill:16, depth:12, movetime:2000 },
+    9: { skill:18, depth:14, movetime:2500 },
+    10:{ skill:20, depth:16, movetime:3000 }
+
+};
+
+
+function initStockfish(){
+
+    if(
+        stockfish ||
+        stockfishFailed
+    )
+        return;
+
+
+    try{
+
+        stockfish=
+            new Worker(
+                "stockfish/stockfish-19-lite-single.js"
+            );
+
+    }
+    catch(error){
+
+        console.warn(
+            "No se pudo cargar Stockfish, se usará el motor local.",
+            error
+        );
+
+        stockfishFailed=true;
+
+        return;
+
+    }
+
+
+    stockfish.onerror=
+        function(error){
+
+            console.warn(
+                "Stockfish falló, se usará el motor local como respaldo.",
+                error
+            );
+
+            stockfishFailed=true;
+
+            stockfish=null;
+
+        };
+
+
+    stockfish.onmessage=
+        function(event){
+
+            const line=
+                typeof event.data==="string"
+                ?event.data
+                :(event.data && event.data.data)||"";
+
+            handleStockfishMessage(line);
+
+        };
+
+
+    stockfish.postMessage("uci");
+
+}
+
+
+function handleStockfishMessage(line){
+
+    if(!line)
+        return;
+
+
+    if(line==="uciok"){
+
+        stockfish.postMessage("isready");
+
+        return;
+
+    }
+
+
+    if(line==="readyok"){
+
+        stockfishReady=true;
+
+        return;
+
+    }
+
+
+    if(
+        line.indexOf("bestmove")===0
+    ){
+
+        stockfishThinking=false;
+
+
+        /*
+           Si mientras tanto se reinició la partida,
+           se rindió, o ya no le toca a la máquina,
+           ignoramos esta respuesta tardía.
+        */
+
+        if(
+            gameOver ||
+            mode!=="bot" ||
+            turn===playerColor
+        ){
+
+            return;
+
+        }
+
+
+        const parts=
+            line.split(" ");
+
+        const uciMove=
+            parts[1];
+
+
+        if(
+            !uciMove ||
+            uciMove==="(none)"
+        ){
+
+            return;
+
+        }
+
+
+        const move=
+            uciMoveToInternal(
+                uciMove
+            );
+
+
+        if(move){
+
+            executeMove(move);
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   TABLERO -> FEN
+========================================================= */
+
+function boardToFEN(){
+
+    const rows=[];
+
+
+    for(
+        let r=0;
+        r<8;
+        r++
+    ){
+
+        let row="";
+
+        let empty=0;
+
+
+        for(
+            let c=0;
+            c<8;
+            c++
+        ){
+
+            const piece=
+                board[r][c];
+
+
+            if(!piece){
+
+                empty++;
+
+                continue;
+
+            }
+
+
+            if(empty>0){
+
+                row+=empty;
+
+                empty=0;
+
+            }
+
+
+            row+=
+                piece.color==="w"
+                ?piece.type
+                :piece.type.toLowerCase();
+
+        }
+
+
+        if(empty>0){
+
+            row+=empty;
+
+        }
+
+
+        rows.push(row);
+
+    }
+
+
+    const placement=
+        rows.join("/");
+
+
+    const castling=
+        (castleRights.wK?"K":"")+
+        (castleRights.wQ?"Q":"")+
+        (castleRights.bK?"k":"")+
+        (castleRights.bQ?"q":"")
+        ||"-";
+
+
+    let epSquare="-";
+
+
+    if(enPassant){
+
+        const files=
+            "abcdefgh";
+
+        epSquare=
+            files[enPassant.c]+
+            (8-enPassant.r);
+
+    }
+
+
+    const fullmove=
+        Math.floor(plyCount/2)+1;
+
+
+    return [
+
+        placement,
+        turn,
+        castling,
+        epSquare,
+        "0",
+        String(fullmove)
+
+    ].join(" ");
+
+}
+
+
+/* =========================================================
+   MOVIMIENTO UCI -> MOVIMIENTO INTERNO
+========================================================= */
+
+function uciMoveToInternal(uciMove){
+
+    const files=
+        "abcdefgh";
+
+
+    const fromC=
+        files.indexOf(uciMove[0]);
+
+    const fromR=
+        8-Number(uciMove[1]);
+
+    const toC=
+        files.indexOf(uciMove[2]);
+
+    const toR=
+        8-Number(uciMove[3]);
+
+
+    const piece=
+        board[fromR] &&
+        board[fromR][fromC];
+
+
+    if(!piece)
+        return null;
+
+
+    const move={
+
+        from:{ r:fromR, c:fromC },
+
+        to:{ r:toR, c:toC },
+
+        castle:null,
+
+        enPassant:false,
+
+        promotion:null
+
+    };
+
+
+    if(uciMove.length===5){
+
+        move.promotion=
+            uciMove[4].toUpperCase();
+
+    }
+
+
+    if(
+        piece.type==="K" &&
+        Math.abs(fromC-toC)===2
+    ){
+
+        move.castle=
+            toC===6?"K":"Q";
+
+    }
+
+
+    if(
+        piece.type==="P" &&
+        fromC!==toC &&
+        !board[toR][toC]
+    ){
+
+        move.enPassant=true;
+
+    }
+
+
+    return move;
+
+}
+
+
+/* =========================================================
+   SOLICITAR JUGADA A STOCKFISH
+========================================================= */
+
+function requestStockfishMove(){
+
+    if(stockfishFailed){
+
+        localComputerMove();
+
+        return;
+
+    }
+
+
+    if(!stockfish){
+
+        initStockfish();
+
+    }
+
+
+    if(stockfishThinking)
+        return;
+
+
+    const config=
+        stockfishLevels[currentLevel] ||
+        stockfishLevels[5];
+
+
+    const trySend=
+        function(){
+
+            if(stockfishFailed){
+
+                localComputerMove();
+
+                return;
+
+            }
+
+
+            if(!stockfishReady){
+
+                setTimeout(trySend,80);
+
+                return;
+
+            }
+
+
+            stockfishThinking=true;
+
+
+            stockfish.postMessage(
+                "setoption name Skill Level value "+
+                config.skill
+            );
+
+
+            stockfish.postMessage(
+                "position fen "+
+                boardToFEN()
+            );
+
+
+            stockfish.postMessage(
+                "go depth "+config.depth+
+                " movetime "+config.movetime
+            );
+
+        };
+
+
+    trySend();
+
+}
+
+
+/* =========================================================
+   MOTOR MATCHESS (LOCAL · RESPALDO SI STOCKFISH FALLA)
+========================================================= */
+
+function localComputerMove(){
 
     if(
         gameOver ||
@@ -6068,6 +6537,25 @@ function computerMove(){
         );
 
     }
+
+}
+
+
+/* =========================================================
+   DESPACHADOR: COMPUTERMOVE (usa Stockfish)
+========================================================= */
+
+function computerMove(){
+
+    if(
+        gameOver ||
+        mode!=="bot" ||
+        turn===playerColor
+    )
+        return;
+
+
+    requestStockfishMove();
 
 }
 
@@ -6416,10 +6904,34 @@ document
 
 function newGame(){
 
+    if(
+        stockfish &&
+        stockfishThinking
+    ){
+
+        stockfish.postMessage("stop");
+
+        stockfishThinking=false;
+
+    }
+
+
+    if(
+        stockfish &&
+        stockfishReady
+    ){
+
+        stockfish.postMessage("ucinewgame");
+
+    }
+
+
     createInitialBoard();
 
 
     turn="w";
+
+    plyCount=0;
 
     selected=null;
 
@@ -7257,6 +7769,8 @@ const gameArea =
 /* =========================================================
    INICIALIZACIÓN
 ========================================================= */
+
+initStockfish();
 
 renderLevels();
 
